@@ -2,11 +2,12 @@ body {
     margin: 1em;
 }
 
-.login_link {
+.login_link, .signup_link {
     background: none;
     border: none;
     color: inherit;
-    padding: 0;
+    padding: 0 1em 1em 1em;
     cursor: pointer;
     outline: inherit;
+    font-size: 1em;
 }
