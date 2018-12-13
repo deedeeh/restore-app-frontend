@@ -9,9 +9,15 @@ class Authentication extends Component {
         show_signup: false
     }
 
-    handleClickToShowForm = () => {
+    handleClickForSignup = () => {
         this.setState({
-            show_signup: !this.state.show_signup
+            show_signup: true
+        })
+    }
+
+    handleClickForLogin = () => {
+        this.setState({
+            show_signup: false
         })
     }
 
@@ -20,9 +26,9 @@ class Authentication extends Component {
         return (
             <div>
                 <h5>An app where you always rely on to remind you of tasks during your work.</h5>
-                <button onClick={this.handleClickToShowForm} className='login_link'>Log in</button>
+                <button onClick={this.handleClickForLogin} className='login_link'>Log in</button>
                 |
-                <button onClick={this.handleClickToShowForm} className='signup_link'>Sign up</button>
+                <button onClick={this.handleClickForSignup} className='signup_link'>Sign up</button>
                 {show_signup ? 
                     <Signup /> : 
                     <Login />
