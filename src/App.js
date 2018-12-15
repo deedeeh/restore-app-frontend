@@ -7,9 +7,6 @@ import Questionnaire from './components/Questionnaire'
 import './css/App.css'
 
 class App extends Component {
-  state = {
-    current_user: null
-  }
 
   render() {
     return (

@@ -9,7 +9,7 @@ class Questionnaire extends Component {
         working_hours_to: '',
         take_breaks: false,
         breaks_quantity: 0,
-        each_break_length: 0
+        break_length: 0
     }
 
     handleTextChange = event => {
@@ -30,12 +30,17 @@ class Questionnaire extends Component {
         })
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('now ready')
+    }
+
     render() {
         const { take_breaks } = this.state
         return (
             <div className='questionnaire_form'>
                 <h3>Please answer those questions:</h3>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <label htmlFor='job_title'>
                         What is your job title?
                         <input 
@@ -55,14 +60,13 @@ class Questionnaire extends Component {
                             /> 
                         </label>
                         <label htmlFor='working_hours_to' className='inline_label'> 
-                            to <input 
+                        &nbsp;to <input 
                                 type='time' 
                                 name='working_hours_to' 
                                 onChange={this.handleTextChange}
                             />
                         </label>
                     </label>
-                    <br />
                     <label htmlFor='take_breaks'>
                         Do you take breaks?
                         <br />
@@ -71,14 +75,14 @@ class Questionnaire extends Component {
                             name='take_breaks' 
                             value='yes'
                             onChange={e => this.handleRadioChange(e.target.value)}
-                        />Yes
+                        /> Yes
                         <input 
                             className='no_margin_left' 
                             type='radio' 
                             name='take_breaks' 
                             value='no'
                             onChange={e => this.handleRadioChange(e.target.value)}
-                        />No
+                        /> No
                     </label>
                     {take_breaks 
                     && <div>
@@ -90,12 +94,12 @@ class Questionnaire extends Component {
                                 onChange={this.handleChangeForNumbers}
                             />
                         </label>
-                        <label htmlFor='each_break_length'>
+                        <label htmlFor='break_length'>
                             How long roughly is each break?
                             <input 
                                 className='inline_text'
                                 type='number' 
-                                name='each_break_length' 
+                                name='break_length' 
                                 onChange={this.handleChangeForNumbers}
                             /> minutes
                         </label>
