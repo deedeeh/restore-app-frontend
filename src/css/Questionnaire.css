@@ -1,17 +1,25 @@
 .questionnaire_form {
     text-align: left;
-}
+  }
   
-input {
+  .questionnaire_form input {
     display: block;
     border: 1px solid #D0D0D0;
     margin: 10px 0;
-}
+  }
   
-input[type='time'], input[type='radio'] {
+  .questionnaire_form input[type='time'], .questionnaire_form input[type='radio'], .questionnaire_form .inline_text {
     display: inline-block;
-}
+  }
   
-.no_margin_left {
+  .questionnaire_form .no_margin_left {
     margin-left: 2em;
-}
+  }
+
+  .questionnaire_form label {
+      display: block;
+  }
+
+  .questionnaire_form .inline_label {
+      display: inline-block;
+  }
