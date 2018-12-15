@@ -9,7 +9,7 @@ class Signup extends Component {
 
     render () {
         return (
-            <form>
+            <form className='signup_form'>
                 <label htmlFor='name'>Name:
                     <input type='text' name='name' />
                 </label>

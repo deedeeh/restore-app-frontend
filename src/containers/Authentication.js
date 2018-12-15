@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Login from '../components/Login'
 import Signup from '../components/Signup'
-import '../css/authentication.css'
+import '../css/Authentication.css'
 
 class Authentication extends Component {
     state = {

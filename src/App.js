@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
+
 import Authentication from './containers/Authentication';
+import About from './components/About'
+import Questionnaire from './components/Questionnaire'
+
+import './css/App.css'
 
 class App extends Component {
+  state = {
+    current_user: null
+  }
+
   render() {
     return (
       <div className="App">
@@ -9,6 +18,10 @@ class App extends Component {
           <h1>RESTore</h1>
         </header>
         <Authentication />
+        <hr />
+        <About />
+        <hr />
+        <Questionnaire />
       </div>
     );
   }

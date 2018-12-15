@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.questionnaire_form {
+  text-align: left;
+}
+
+.questionnaire_form input {
+  border: 1px solid #D0D0D0;
+}

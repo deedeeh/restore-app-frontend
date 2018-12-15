@@ -1,5 +1,7 @@
 body {
     margin: 1em;
+    padding: 0 0.7em;
+    text-align: center;
 }
 
 .login_link, .signup_link {
@@ -10,4 +12,8 @@ body {
     cursor: pointer;
     outline: inherit;
     font-size: 1em;
+}
+
+.login_form input, .signup_form input {
+    border: 1px solid #D0D0D0;
 }

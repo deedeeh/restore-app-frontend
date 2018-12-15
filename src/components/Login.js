@@ -18,7 +18,7 @@ class Login extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className='login_form'>
                 <label htmlFor='username'>Username:
                     <input 
                         type='text' 
