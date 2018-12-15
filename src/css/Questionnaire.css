@@ -23,3 +23,7 @@
   .questionnaire_form .inline_label {
       display: inline-block;
   }
+
+  p {
+    text-align: left;
+  }

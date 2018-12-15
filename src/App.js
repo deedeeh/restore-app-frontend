@@ -5,6 +5,7 @@ import About from './components/About'
 import Questionnaire from './components/Questionnaire'
 
 import './css/App.css'
+import QuestionnaireFeedback from './components/QuestionnaireFeedback';
 
 class App extends Component {
 
@@ -19,6 +20,8 @@ class App extends Component {
         <About />
         <hr />
         <Questionnaire />
+        <hr />
+        <QuestionnaireFeedback />
       </div>
     );
   }

@@ -96,6 +96,7 @@ class Questionnaire extends Component {
                         </label>
                         <label htmlFor='break_length'>
                             How long roughly is each break?
+                            <br />
                             <input 
                                 className='inline_text'
                                 type='number' 
