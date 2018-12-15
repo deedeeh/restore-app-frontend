@@ -1,0 +1,17 @@
+.questionnaire_form {
+    text-align: left;
+}
+  
+input {
+    display: block;
+    border: 1px solid #D0D0D0;
+    margin: 10px 0;
+}
+  
+input[type='time'], input[type='radio'] {
+    display: inline-block;
+}
+  
+.no_margin_left {
+    margin-left: 2em;
+}

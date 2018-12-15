@@ -16,4 +16,5 @@ body {
 
 .login_form input, .signup_form input {
     border: 1px solid #D0D0D0;
+    margin-left: 10px;
 }
