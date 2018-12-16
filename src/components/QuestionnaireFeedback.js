@@ -9,6 +9,7 @@ const QuestionnaireFeedback = (props) => {
         <div>
             <p>After taking a closer look to your answers, RESTore cares about your productity and wellbeing so here are few suggestions:</p>
             <div>Check how many hours the user work? take_breaks? how many and how long each? EVALUATE</div>
+            <button>My Dashboard</button>
         </div>
     )
 }

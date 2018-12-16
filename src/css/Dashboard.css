@@ -1,0 +1,8 @@
+.dateTime_container {
+    text-align: center;
+    padding: 1em 0;
+}
+
+.dateTime_link, .dateTime_span {
+    text-decoration: none;
+}

@@ -3,9 +3,11 @@ import React, { Component } from 'react';
 import Authentication from './containers/Authentication';
 import About from './components/About'
 import Questionnaire from './components/Questionnaire'
+import QuestionnaireFeedback from './components/QuestionnaireFeedback';
+import Dashboard from './containers/Dashboard';
 
 import './css/App.css'
-import QuestionnaireFeedback from './components/QuestionnaireFeedback';
+
 
 class App extends Component {
 
@@ -22,6 +24,8 @@ class App extends Component {
         <Questionnaire />
         <hr />
         <QuestionnaireFeedback />
+        <hr />
+        <Dashboard />
       </div>
     );
   }
