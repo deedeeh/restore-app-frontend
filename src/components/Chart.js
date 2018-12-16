@@ -16,8 +16,8 @@ class Chart extends Component {
                 <CircularProgressbar
                     initialAnimation={true}
                     counterClockwise={false}
-                    percentage={this.state.percentage}
-                    text={`${this.state.percentage}%`}
+                    percentage={percentage}
+                    text={`${percentage}%`}
                 />
             </div>
         )

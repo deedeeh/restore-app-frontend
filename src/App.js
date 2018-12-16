@@ -5,6 +5,7 @@ import About from './components/About'
 import Questionnaire from './components/Questionnaire'
 import QuestionnaireFeedback from './components/QuestionnaireFeedback';
 import Dashboard from './containers/Dashboard';
+import Evaluation from './components/Evaluation'
 
 import './css/App.css'
 
@@ -26,6 +27,8 @@ class App extends Component {
         <QuestionnaireFeedback />
         <hr />
         <Dashboard />
+        <hr />
+        <Evaluation />
       </div>
     );
   }
