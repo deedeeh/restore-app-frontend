@@ -3,13 +3,23 @@ body {
 }
 
 .login_link, .signup_link {
-    background: none;
-    border: none;
+    /* border: none; */
     color: inherit;
-    padding: 0 1em 1em 1em;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 5px;
     cursor: pointer;
     outline: inherit;
     font-size: 1em;
+    color: white;
+}
+
+.signup_link {
+    background: #43A047;
+}
+
+.login_link {
+    background: #03A9F4;
 }
 
 .login_form input, .signup_form input {

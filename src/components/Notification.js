@@ -1,7 +1,13 @@
 import React from 'react'
 
 const Notification = () => {
-    return <p>Add notification in this component</p>
+    return (
+        <div>
+            <p>It is time for your - 1st - break</p>
+            <button>OK</button>
+            <button>Snooze</button>
+        </div>
+    )
 }
 
 export default Notification;

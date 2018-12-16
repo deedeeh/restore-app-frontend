@@ -27,7 +27,6 @@ class Authentication extends Component {
             <div>
                 <h5>An app where you always rely on to remind you of tasks during your work.</h5>
                 <button onClick={this.handleClickForLogin} className='login_link'>Log in</button>
-                |
                 <button onClick={this.handleClickForSignup} className='signup_link'>Sign up</button>
                 {show_signup ? 
                     <Signup /> : 

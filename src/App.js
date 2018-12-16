@@ -7,6 +7,7 @@ import QuestionnaireFeedback from './components/QuestionnaireFeedback';
 import Dashboard from './containers/Dashboard';
 import Evaluation from './components/Evaluation';
 import Navigation from './components/Navigation';
+import Notification from './components/Notification';
 
 import './css/App.css'
 import './css/Navigation.css'
@@ -33,6 +34,8 @@ class App extends Component {
           <Dashboard />
           <hr />
           <Evaluation />
+          <hr />
+          <Notification />
         </div>
       </div>
     );
