@@ -13,6 +13,25 @@ class Signup extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
+    postDefaultQuestionnaire = (user_id) => {
+        const body = {
+            user_id,
+            job_title: '',
+            working_hours_from: '',
+            working_hours_to: '',
+            take_breaks: false,
+            breaks_quantity: null,
+            break_length: null
+            }
+        fetch('http://localhost:3000/api/v1/questionnaires', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+    }
+
     submit = (e) => {
         e.preventDefault()
         const body = {
@@ -25,6 +44,7 @@ class Signup extends Component {
             .then(res => {
                 this.props.setUserId(res.id)
                 localStorage.setItem('token', res.token)
+                this.postDefaultQuestionnaire(res.id)
                 this.props.history.push('/about')
             })
     }

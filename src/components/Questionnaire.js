@@ -9,12 +9,30 @@ class Questionnaire extends Component {
         working_hours_from: '',
         working_hours_to: '',
         take_breaks: false,
-        breaks_quantity: 0,
-        break_length: 0
+        breaks_quantity: null,
+        break_length: null
+    }
+
+    getResponseFromDB = () => {
+        return fetch('http://localhost:3000/api/v1/questionnaire', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(resp => resp.json())
+        .then((data) => this.setState(data))
+    }
+
+    checkBoxFunc = () => {
+        const checkInput = document.getElementById('take_breaks')
+        return this.state.take_breaks ? null : checkInput.checked 
     }
 
     componentDidMount() {
         this.setState({ user_id: parseInt(localStorage.getItem('activeUser'))})
+        this.getResponseFromDB()
+        .then(() => this.checkBoxFunc()) 
     }
 
     handleTextChange = event => {
@@ -29,9 +47,9 @@ class Questionnaire extends Component {
         })
     }
 
-    handleRadioChange = newBoolean => {
+    handleRadioChange = () => {
         this.setState({
-            take_breaks: newBoolean === 'yes' ? true : false
+            take_breaks: !this.state.take_breaks
         })
     }
 
@@ -41,10 +59,11 @@ class Questionnaire extends Component {
     }
 
     postQuestionnaireResponse = () => {
-        fetch('http://localhost:3000/api/v1/questionnaires', {
-            method: 'POST',
+        fetch('http://localhost:3000/api/v1/questionnaire', {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({...this.state})
         })
@@ -52,8 +71,9 @@ class Questionnaire extends Component {
         .then(() => this.props.history.push('/feedback'))
     }
 
+
     render() {
-        const { take_breaks } = this.state
+        const { take_breaks, job_title, working_hours_from, working_hours_to, breaks_quantity, break_length} = this.state
         return (
             <div className='questionnaire_form'>
                 <h3>Please answer those questions:</h3>
@@ -63,6 +83,7 @@ class Questionnaire extends Component {
                         <input 
                             type='text' 
                             name='job_title' 
+                            value={job_title}
                             onChange={this.handleTextChange}
                         />
                     </label>
@@ -73,6 +94,7 @@ class Questionnaire extends Component {
                             from <input 
                                 type='time' 
                                 name='working_hours_from' 
+                                value={working_hours_from}
                                 onChange={this.handleTextChange}
                             /> 
                         </label>
@@ -80,6 +102,7 @@ class Questionnaire extends Component {
                         &nbsp;to <input 
                                 type='time' 
                                 name='working_hours_to' 
+                                value={working_hours_to}
                                 onChange={this.handleTextChange}
                             />
                         </label>
@@ -87,19 +110,13 @@ class Questionnaire extends Component {
                     <label htmlFor='take_breaks'>
                         Do you take breaks?
                         <br />
-                        <input 
-                            type='radio' 
+                        <input
+                            id='take_breaks'
+                            type='checkbox' 
                             name='take_breaks' 
-                            value='yes'
-                            onChange={e => this.handleRadioChange(e.target.value)}
-                        /> Yes
-                        <input 
-                            className='no_margin_left' 
-                            type='radio' 
-                            name='take_breaks' 
-                            value='no'
-                            onChange={e => this.handleRadioChange(e.target.value)}
-                        /> No
+                            value={take_breaks}
+                            onChange={this.handleRadioChange}
+                        />
                     </label>
                     {take_breaks 
                     && <div>
@@ -108,6 +125,7 @@ class Questionnaire extends Component {
                             <input 
                                 type='number' 
                                 name='breaks_quantity'
+                                value={breaks_quantity}
                                 onChange={this.handleChangeForNumbers}
                             />
                         </label>
@@ -118,6 +136,7 @@ class Questionnaire extends Component {
                                 className='inline_text'
                                 type='number' 
                                 name='break_length' 
+                                value={break_length}
                                 onChange={this.handleChangeForNumbers}
                             /> minutes
                         </label>

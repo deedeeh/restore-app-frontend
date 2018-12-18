@@ -1,5 +1,7 @@
 import React from 'react';
 import { slide as Menu } from "react-burger-menu";
+import { Link } from 'react-router-dom'
+
 
 const Navigation = (props) => {
     const logoutHandler = () => {
@@ -7,17 +9,18 @@ const Navigation = (props) => {
         localStorage.removeItem('activeUser');
         window.location.reload();
     }
+
     return (
        <Menu {...props}>
             <a className="menu-item" href="/about">
                 About
             </a>
 
-            <a className="menu-item" href="#">
+            <Link to='/questionnaire' className="menu-item">
                 Edit Profile
-            </a>
-
-            <a className="menu-item" href="#">
+            </Link>
+            
+            <a className="menu-item" href='#'>
                 History
             </a>
 
