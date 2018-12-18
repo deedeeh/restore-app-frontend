@@ -4,6 +4,7 @@ import { slide as Menu } from "react-burger-menu";
 const Navigation = (props) => {
     const logoutHandler = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('activeUser');
         window.location.reload();
     }
     return (

@@ -23,6 +23,7 @@ class Signup extends Component {
 
         this.props.handleSubmit(body)
             .then(res => {
+                this.props.setUserId(res.id)
                 localStorage.setItem('token', res.token)
                 this.props.history.push('/about')
             })

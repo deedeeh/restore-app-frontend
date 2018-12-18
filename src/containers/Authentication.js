@@ -31,15 +31,15 @@ class Authentication extends Component {
         }).then(resp => resp.json()) 
     }
 
-    login = (body) => {
-        return fetch('http://localhost:3000/api/v1/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        }).then(resp => resp.json()).then(data => console.log(data)) 
-    }
+    // login = (body) => {
+    //     return fetch('http://localhost:3000/api/v1/login', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(body)
+    //     }).then(resp => resp.json()).then(data => console.log(data)) 
+    // }
 
     signup = (body) => {
         return fetch('http://localhost:3000/api/v1/signup', {
@@ -59,7 +59,7 @@ class Authentication extends Component {
                 <button onClick={this.handleClickForLogin} className='login_link'>Log in</button>
                 <button onClick={this.handleClickForSignup} className='signup_link'>Sign up</button>
                 {show_signup ? 
-                    <Signup handleSubmit={this.signup}/> : 
+                    <Signup setUserId={this.props.setUserId} handleSubmit={this.signup}/> : 
                     <Login postLoginDetails = {this.props.postLoginDetails}/>
                 }
             </div>

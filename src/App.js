@@ -41,12 +41,36 @@ class App extends Component {
       .then(resp => resp.json())
       .then(data => {
           if (data.id) {
-            this.setState({active_user_id: data.id})
+            // this.setState({active_user_id: data.id})
+            localStorage.setItem('activeUser', data.id)
             localStorage.setItem('token', data.token)
             this.props.history.push('/dashboard')
           }
       })
   }
+
+  setUserId = (active_user_id) => {
+    // this.setState({ active_user_id })
+    localStorage.setItem('activeUser', active_user_id)
+  }
+
+  // postSignupDetails = (user_credentials) => {
+  //   fetch('http://localhost:3000/api/v1/signup', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({ ...user_credentials })
+  //   })
+  //     .then(resp => resp.json())
+  //     .then(data => {
+  //         if (data.id) {
+  //           this.setState({active_user_id: data.id})
+  //           localStorage.setItem('token', data.token)
+  //           this.props.history.push('/about')
+  //         }
+  //     })
+  // }
 
   render() {
     console.log('id', this.props)
@@ -61,8 +85,9 @@ class App extends Component {
             <Route exact path='/about' component={About} />
             <Route exact path='/questionnaire' component={Questionnaire} />
             <Route exact path='/dashboard' component={Dashboard} />
+            <Route exact path='/feedback' component={QuestionnaireFeedback} />
           </Switch>
-            : <Authentication postLoginDetails={this.postLoginDetails} />
+            : <Authentication setUserId={this.setUserId} postLoginDetails={this.postLoginDetails} />
           }
         </div>
       </div>

@@ -4,12 +4,17 @@ import '../css/Questionnaire.css'
 
 class Questionnaire extends Component {
     state = {
+        user_id: 0,
         job_title: '',
         working_hours_from: '',
         working_hours_to: '',
         take_breaks: false,
         breaks_quantity: 0,
         break_length: 0
+    }
+
+    componentDidMount() {
+        this.setState({ user_id: parseInt(localStorage.getItem('activeUser'))})
     }
 
     handleTextChange = event => {
@@ -32,24 +37,19 @@ class Questionnaire extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log('now ready')
+        this.postQuestionnaireResponse();
     }
 
     postQuestionnaireResponse = () => {
-        fetch('http://localhost:3000/api/v1/create', {
+        fetch('http://localhost:3000/api/v1/questionnaires', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                job_title: 'test',
-                working_hours_from: 'test',
-                working_hours_to: 'test',
-                take_breaks: true,
-                breaks_quantity: 2,
-                break_length: 20
-            })
+            body: JSON.stringify({...this.state})
         })
+        .then(resp => resp.json())
+        .then(() => this.props.history.push('/feedback'))
     }
 
     render() {
