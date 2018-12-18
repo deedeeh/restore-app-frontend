@@ -21,6 +21,36 @@ class Authentication extends Component {
         })
     }
 
+    validate = () => {
+        return fetch('http://localhost:3000/api/v1/validate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(resp => resp.json()) 
+    }
+
+    login = (body) => {
+        return fetch('http://localhost:3000/api/v1/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        }).then(resp => resp.json()).then(data => console.log(data)) 
+    }
+
+    signup = (body) => {
+        return fetch('http://localhost:3000/api/v1/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        }).then(resp => resp.json()) 
+    }
+
     render() {
         const { show_signup } = this.state
         return (
@@ -29,8 +59,8 @@ class Authentication extends Component {
                 <button onClick={this.handleClickForLogin} className='login_link'>Log in</button>
                 <button onClick={this.handleClickForSignup} className='signup_link'>Sign up</button>
                 {show_signup ? 
-                    <Signup /> : 
-                    <Login />
+                    <Signup handleSubmit={this.signup}/> : 
+                    <Login postLoginDetails = {this.props.postLoginDetails}/>
                 }
             </div>
         )

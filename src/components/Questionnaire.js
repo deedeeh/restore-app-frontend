@@ -35,6 +35,23 @@ class Questionnaire extends Component {
         console.log('now ready')
     }
 
+    postQuestionnaireResponse = () => {
+        fetch('http://localhost:3000/api/v1/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                job_title: 'test',
+                working_hours_from: 'test',
+                working_hours_to: 'test',
+                take_breaks: true,
+                breaks_quantity: 2,
+                break_length: 20
+            })
+        })
+    }
+
     render() {
         const { take_breaks } = this.state
         return (

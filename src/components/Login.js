@@ -8,7 +8,10 @@ class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.props.postLoginDetails(this.state)
     }
+
+    
 
     handleChange = (event) => {
         this.setState({
