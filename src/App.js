@@ -17,7 +17,9 @@ import './css/Navigation.css'
 
 class App extends Component {
   state = {
-    active_user_id: 0
+    // active_user_id: 0,
+    token: localStorage.getItem('token'),
+    activeUser: localStorage.getItem('activeUser') && localStorage.getItem('activeUser') !== 'undefined' ? JSON.parse(localStorage.getItem('activeUser')) : undefined
   }
 
   validate = () => {
@@ -40,18 +42,23 @@ class App extends Component {
     })
       .then(resp => resp.json())
       .then(data => {
-          if (data.id) {
-            // this.setState({active_user_id: data.id})
-            localStorage.setItem('activeUser', data.id)
+          if (data.token) {
+            this.setState({
+              activeUser: data.user,
+              // active_user_id: data.user.id,
+              token: data.token
+            })
+            localStorage.setItem('activeUser', JSON.stringify(data.user))
             localStorage.setItem('token', data.token)
+          
             this.props.history.push('/dashboard')
           }
       })
   }
 
-  setUserId = (active_user_id) => {
-    // this.setState({ active_user_id })
-    localStorage.setItem('activeUser', active_user_id)
+  setUser = (activeUser) => {
+    this.setState({ activeUser })
+    localStorage.setItem('activeUser', JSON.stringify(activeUser))
   }
 
   // postSignupDetails = (user_credentials) => {
@@ -73,7 +80,8 @@ class App extends Component {
   // }
 
   render() {
-    console.log('id', this.props)
+    // console.log('token', this.state.token)
+    // console.log('activeUser', this.state.activeUser)
     return (
       <div className="App">
         <header className="App-header">
@@ -81,13 +89,14 @@ class App extends Component {
           <h1>RESTore</h1>
         </header>
         <div className='styling_sections' id="page-wrap">
-          {localStorage.getItem('token') ? <Switch>
+          {this.state.activeUser ?
+          <Switch>
             <Route exact path='/about' component={About} />
-            <Route exact path='/questionnaire' component={Questionnaire} />
-            <Route exact path='/dashboard' component={Dashboard} />
+            <Route exact path='/questionnaire' component={(props) => <Questionnaire token={this.state.token} user={this.state.activeUser} {...props} />} />
+            <Route exact path='/dashboard' component={(props) => <Dashboard {...props} token={this.state.token} user={this.state.activeUser} />} />
             <Route exact path='/feedback' component={QuestionnaireFeedback} />
           </Switch>
-            : <Authentication setUserId={this.setUserId} postLoginDetails={this.postLoginDetails} />
+            : <Authentication setUser={this.setUser} postLoginDetails={this.postLoginDetails} />
           }
         </div>
       </div>

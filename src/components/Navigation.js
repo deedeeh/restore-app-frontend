@@ -12,9 +12,12 @@ const Navigation = (props) => {
 
     return (
        <Menu {...props}>
-            <a className="menu-item" href="/about">
+            <Link to="/about" className="menu-item" >
                 About
-            </a>
+            </Link>
+            <Link to="/dashboard" className="menu-item">
+                Dashboard
+            </Link>
 
             <Link to='/questionnaire' className="menu-item">
                 Edit Profile

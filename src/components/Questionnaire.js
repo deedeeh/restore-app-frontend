@@ -9,7 +9,7 @@ class Questionnaire extends Component {
         working_hours_from: '',
         working_hours_to: '',
         take_breaks: false,
-        breaks_quantity: null,
+        breaks_interval: null,
         break_length: null
     }
 
@@ -17,7 +17,7 @@ class Questionnaire extends Component {
         return fetch('http://localhost:3000/api/v1/questionnaire', {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': this.props.token
             }
         })
         .then(resp => resp.json())
@@ -26,11 +26,11 @@ class Questionnaire extends Component {
 
     checkBoxFunc = () => {
         const checkInput = document.getElementById('take_breaks')
-        return this.state.take_breaks ? null : checkInput.checked 
+        return checkInput.checked=this.state.take_breaks ?  true : false
     }
 
     componentDidMount() {
-        this.setState({ user_id: parseInt(localStorage.getItem('activeUser'))})
+        this.setState({ user_id: this.props.user.id})
         this.getResponseFromDB()
         .then(() => this.checkBoxFunc()) 
     }
@@ -53,6 +53,14 @@ class Questionnaire extends Component {
         })
     }
 
+    //converts the hh:mm to minutes and it will be called before saving the state to the db
+    handleBreaksInterval = event => {
+        const breaksIntervalInMinutes = parseInt(event.target.value)
+        this.setState({
+            breaks_interval: breaksIntervalInMinutes
+        })
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.postQuestionnaireResponse();
@@ -63,7 +71,7 @@ class Questionnaire extends Component {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': this.props.token
             },
             body: JSON.stringify({...this.state})
         })
@@ -73,7 +81,7 @@ class Questionnaire extends Component {
 
 
     render() {
-        const { take_breaks, job_title, working_hours_from, working_hours_to, breaks_quantity, break_length} = this.state
+        const { take_breaks, job_title, working_hours_from, working_hours_to, breaks_interval, break_length} = this.state
         return (
             <div className='questionnaire_form'>
                 <h3>Please answer those questions:</h3>
@@ -108,26 +116,26 @@ class Questionnaire extends Component {
                         </label>
                     </label>
                     <label htmlFor='take_breaks'>
-                        Do you take breaks?
+                        Do you take breaks? 
                         <br />
                         <input
                             id='take_breaks'
                             type='checkbox' 
                             name='take_breaks' 
-                            value={take_breaks}
+                            value={`${take_breaks}`}
                             onChange={this.handleRadioChange}
                         />
                     </label>
                     {take_breaks 
                     && <div>
-                        <label htmlFor='breaks_quantity'>
-                            How many breaks?
-                            <input 
-                                type='number' 
-                                name='breaks_quantity'
-                                value={breaks_quantity}
-                                onChange={this.handleChangeForNumbers}
-                            />
+                        <label htmlFor='breaks_interval'>
+                            How often do you want to take breaks?
+                            <select name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval}>
+                                <option value='60'>1 hour</option>
+                                <option value='120'>2 hours</option>
+                                <option value='180'>3 hours</option>
+                                <option value='240'>4 hours</option>
+                            </select>
                         </label>
                         <label htmlFor='break_length'>
                             How long roughly is each break?

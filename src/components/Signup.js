@@ -20,7 +20,7 @@ class Signup extends Component {
             working_hours_from: '',
             working_hours_to: '',
             take_breaks: false,
-            breaks_quantity: null,
+            breaks_interval: null,
             break_length: null
             }
         fetch('http://localhost:3000/api/v1/questionnaires', {
@@ -42,11 +42,11 @@ class Signup extends Component {
 
         this.props.handleSubmit(body)
             .then(res => {
-                this.props.setUserId(res.id)
+                console.log(res.token)
+                this.props.setUser(res.user)
                 localStorage.setItem('token', res.token)
-                this.postDefaultQuestionnaire(res.id)
-                this.props.history.push('/about')
             })
+            .then(() => this.props.history.push('/about'))
     }
 
     render () {
@@ -70,7 +70,5 @@ class Signup extends Component {
         )
     }
 }
-
-/* <input type='submit' value='Sign up'/> */
 
 export default withRouter(Signup);
