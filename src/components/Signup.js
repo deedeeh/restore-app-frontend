@@ -6,7 +6,8 @@ class Signup extends Component {
     state = {
         name: "",
         username: "",
-        password: ""
+        password: "",
+        errors: []
     }
 
     handleChange = (event) => {
@@ -60,6 +61,15 @@ class Signup extends Component {
                     <input type='password' name='password' value={this.state.password} onChange={this.handleChange} />
                 </label>
                 <br />
+                {
+                    this.state.errors.length > 0 && (
+                        <div className="sign-up-errors">
+                        {
+                            this.state.errors.map(e => <p>{e}</p>)
+                        }
+                    </div>
+                    )
+                }
                 <button>Submit</button>
             </form>
         )
