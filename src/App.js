@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
 import Authentication from './containers/Authentication';
@@ -99,12 +99,20 @@ class App extends Component {
           <h1>RESTore</h1>
         </header>
         <div className='styling_sections' id="page-wrap">
-          {this.state.activeUser ?
+          {(this.state.token && this.state.activeUser) ?
           <Switch>
             <Route exact path='/about' component={About} />
             <Route exact path='/questionnaire' component={(props) => <Questionnaire token={this.state.token} user={this.state.activeUser} {...props} />} />
             <Route exact path='/dashboard' component={(props) => <Dashboard {...props} token={this.state.token} user={this.state.activeUser} />} />
             <Route exact path='/feedback' component={QuestionnaireFeedback} />
+            <Route exact path='/history' component={() => <h2>Coming Soon...</h2>} />
+            <Route component={() => 
+              <div>
+                <h2>Not Found</h2>
+                <Link to='/about'>Back to about</Link>
+              </div>
+              }
+            />
           </Switch>
             : <Authentication handleSignUpResponse={this.handleSignUpResponse} setUser={this.setUser} postLoginDetails={this.postLoginDetails} />
           }

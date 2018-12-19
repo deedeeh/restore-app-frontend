@@ -15,17 +15,17 @@ const Navigation = (props) => {
             <Link to="/about" className="menu-item" onClick={props.clickLink}>
                 About
             </Link>
-            <Link to="/dashboard" className="menu-item">
+            <Link to="/dashboard" className="menu-item" onClick={props.clickLink}>
                 Dashboard
             </Link>
 
-            <Link to='/questionnaire' className="menu-item">
+            <Link to='/questionnaire' className="menu-item" onClick={props.clickLink}>
                 Edit Profile
             </Link>
             
-            <a className="menu-item" href='#'>
+            <Link className="menu-item" to='/history' onClick={props.clickLink}>
                 History
-            </a>
+            </Link>
 
             <a className="menu-item" onClick={() => {logoutHandler(); props.clickLink()}}>
                 Logout
