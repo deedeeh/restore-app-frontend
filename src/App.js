@@ -18,6 +18,7 @@ import './css/Navigation.css'
 class App extends Component {
   state = {
     // active_user_id: 0,
+    menuIsOpen: false,
     token: localStorage.getItem('token'),
     activeUser: localStorage.getItem('activeUser') && localStorage.getItem('activeUser') !== 'undefined' ? JSON.parse(localStorage.getItem('activeUser')) : undefined
   }
@@ -61,6 +62,15 @@ class App extends Component {
     localStorage.setItem('activeUser', JSON.stringify(activeUser))
   }
 
+  handleSignUpResponse = res => {
+    this.setUser(res.user)
+    this.setState({
+      token: res.token
+    })
+    localStorage.setItem('token', res.token)
+    this.props.history.push('/about')
+  }
+
   // postSignupDetails = (user_credentials) => {
   //   fetch('http://localhost:3000/api/v1/signup', {
   //     method: 'POST',
@@ -85,7 +95,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Navigation pageWrapId={"page-wrap"} outerContainerId={"Nav-app"} />
+          <Navigation clickLink={() => this.setState({menuIsOpen: false})} onStateChange={(state) => this.setState({menuIsOpen: state.isOpen}) } isOpen={this.state.menuIsOpen} pageWrapId={"page-wrap"} outerContainerId={"Nav-app"} />
           <h1>RESTore</h1>
         </header>
         <div className='styling_sections' id="page-wrap">
@@ -96,7 +106,7 @@ class App extends Component {
             <Route exact path='/dashboard' component={(props) => <Dashboard {...props} token={this.state.token} user={this.state.activeUser} />} />
             <Route exact path='/feedback' component={QuestionnaireFeedback} />
           </Switch>
-            : <Authentication setUser={this.setUser} postLoginDetails={this.postLoginDetails} />
+            : <Authentication handleSignUpResponse={this.handleSignUpResponse} setUser={this.setUser} postLoginDetails={this.postLoginDetails} />
           }
         </div>
       </div>

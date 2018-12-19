@@ -59,7 +59,7 @@ class Authentication extends Component {
                 <button onClick={this.handleClickForLogin} className='login_link'>Log in</button>
                 <button onClick={this.handleClickForSignup} className='signup_link'>Sign up</button>
                 {show_signup ? 
-                    <Signup setUser={this.props.setUser} handleSubmit={this.signup}/> : 
+                    <Signup handleResponse={this.props.handleSignUpResponse} handleSubmit={this.signup}/> : 
                     <Login postLoginDetails = {this.props.postLoginDetails}/>
                 }
             </div>

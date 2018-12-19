@@ -23,16 +23,10 @@ class Questionnaire extends Component {
         .then(resp => resp.json())
         .then((data) => this.setState(data))
     }
-
-    checkBoxFunc = () => {
-        const checkInput = document.getElementById('take_breaks')
-        return checkInput.checked=this.state.take_breaks ?  true : false
-    }
-
+    
     componentDidMount() {
         this.setState({ user_id: this.props.user.id})
         this.getResponseFromDB()
-        .then(() => this.checkBoxFunc()) 
     }
 
     handleTextChange = event => {
@@ -47,7 +41,7 @@ class Questionnaire extends Component {
         })
     }
 
-    handleRadioChange = () => {
+    handleBreaksCheckboxChange = () => {
         this.setState({
             take_breaks: !this.state.take_breaks
         })
@@ -121,9 +115,10 @@ class Questionnaire extends Component {
                         <input
                             id='take_breaks'
                             type='checkbox' 
+                            checked={take_breaks}
                             name='take_breaks' 
                             value={`${take_breaks}`}
-                            onChange={this.handleRadioChange}
+                            onChange={this.handleBreaksCheckboxChange}
                         />
                     </label>
                     {take_breaks 

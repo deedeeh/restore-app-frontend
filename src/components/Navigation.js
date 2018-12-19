@@ -12,7 +12,7 @@ const Navigation = (props) => {
 
     return (
        <Menu {...props}>
-            <Link to="/about" className="menu-item" >
+            <Link to="/about" className="menu-item" onClick={props.clickLink}>
                 About
             </Link>
             <Link to="/dashboard" className="menu-item">
@@ -27,7 +27,7 @@ const Navigation = (props) => {
                 History
             </a>
 
-            <a className="menu-item" onClick={logoutHandler}>
+            <a className="menu-item" onClick={() => {logoutHandler(); props.clickLink()}}>
                 Logout
             </a>
         </Menu>
