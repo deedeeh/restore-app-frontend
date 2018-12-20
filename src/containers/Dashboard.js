@@ -62,11 +62,16 @@ class Dashboard extends Component {
         this.setState({ timestamp });
     }
 
+    capitalize = (word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
     render() {
+        const { user } = this.props
         return (
             <div>
-                <h3>Welcome {this.props.user.name} to your dashboard</h3>
-                <h4>{this.props.user.questionnaire.job_title}</h4>
+                <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
+                <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
                 <div className='dateTime_container'> 
                     <iframe src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=en&size=small&timezone=Europe%2FLondon" width="100%" height="90" frameborder="0" seamless>
                     </iframe> 

@@ -23,7 +23,7 @@ class Questionnaire extends Component {
         .then(resp => resp.json())
         .then((data) => this.setState(data))
     }
-    
+
     componentDidMount() {
         this.setState({ user_id: this.props.user.id})
         this.getResponseFromDB()

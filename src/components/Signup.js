@@ -42,11 +42,14 @@ class Signup extends Component {
         }
 
         this.props.handleSubmit(body)
-            .then(this.props.handleResponse)
+            .then((e) => {
+                const err = this.props.handleResponse(e)
+                this.setState({ errors: err })
+            })
     }
 
     render () {
-        console.log('this.props', this.props)
+        // console.log('this.props', this.props)
         return (
             <form className='signup_form' onSubmit={this.submit}>
                 <label htmlFor='name'>Name:
@@ -64,9 +67,11 @@ class Signup extends Component {
                 {
                     this.state.errors.length > 0 && (
                         <div className="sign-up-errors">
+                            <ul>
                         {
-                            this.state.errors.map(e => <p>{e}</p>)
+                            this.state.errors.map(e => <li key={e}>{e}</li>)
                         }
+                        </ul>
                     </div>
                     )
                 }
