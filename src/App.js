@@ -25,12 +25,23 @@ class App extends Component {
 
   validate = () => {
     return fetch('http://localhost:3000/api/v1/validate', {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('token')
       }
-    }).then(resp => resp.json())
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      if (data.user) {
+        this.setState({
+          activeUser: data.user
+        })
+      }
+    })
+  }
+
+  componentDidMount() {
+    if (this.state.token) this.validate()
   }
 
   postLoginDetails = (user_credentials) => {

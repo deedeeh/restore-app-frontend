@@ -10,14 +10,14 @@ class Chart extends Component {
     }
 
     render() {
-        const { percentage } = this.state;
+        const { percentage } = this.props;
         return (
             <div>
                 <CircularProgressbar
                     initialAnimation={true}
                     counterClockwise={false}
                     percentage={percentage}
-                    text={`${percentage}%`}
+                    text={`${Math.floor(percentage)}%`}
                 />
             </div>
         )

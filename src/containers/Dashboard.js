@@ -2,6 +2,32 @@ import React, { Component } from 'react'
 
 import Chart from '../components/Chart'
 
+const timeStringToObject = (timeString) => {
+    const times = timeString.split(':')
+    return {
+      hours: parseInt(times[0]),
+      minutes: parseInt(times[1])
+    }
+  }
+  
+  const startEndToMinutes = (start, end) => {
+    const startObj = timeStringToObject(start);
+    const endObj = timeStringToObject(end);
+    const hours = endObj.hours - startObj.hours;
+    const minutes = endObj.minutes - startObj.minutes;
+    return (hours * 60) + minutes;
+  }
+  
+  const minutesSince = (from) => {
+    const fromObj = timeStringToObject(from)
+    const now = new Date(Date.now())
+    const nowString = `${now.getHours()}:${now.getMinutes()}`
+    const nowObj = timeStringToObject(nowString)
+    const hours = nowObj.hours - fromObj.hours;
+    const minutes = nowObj.minutes - fromObj.minutes;
+    return (hours * 60) + minutes;
+  }
+
 class Dashboard extends Component {
     state = {
         timestamp: '',
@@ -66,6 +92,13 @@ class Dashboard extends Component {
         return word.charAt(0).toUpperCase() + word.slice(1);
     }
 
+    getPercentageToNextBreak = (data) => {
+        const totalMinutesInDay = startEndToMinutes(data.working_hours_from, data.working_hours_to)
+        const currentMinuteFromStart = minutesSince(data.working_hours_from)
+        const breakTotal = data.breaks_interval + data.break_length
+        return 100 - ((currentMinuteFromStart / breakTotal - Math.floor(currentMinuteFromStart / breakTotal)) * 100)
+      }
+
     render() {
         const { user } = this.props
         return (
@@ -76,7 +109,7 @@ class Dashboard extends Component {
                     <iframe src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=en&size=small&timezone=Europe%2FLondon" width="100%" height="90" frameborder="0" seamless>
                     </iframe> 
                 </div>
-                <Chart />
+                <Chart percentage={this.getPercentageToNextBreak(user.questionnaire)} />
             </div>
         )
     }

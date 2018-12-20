@@ -4,13 +4,16 @@ import '../css/Questionnaire.css'
 
 class Questionnaire extends Component {
     state = {
-        user_id: 0,
-        job_title: '',
-        working_hours_from: '',
-        working_hours_to: '',
-        take_breaks: false,
-        breaks_interval: null,
-        break_length: null
+        questionnaire: { 
+            user_id: 0,
+            job_title: '',
+            working_hours_from: '',
+            working_hours_to: '',
+            take_breaks: false,
+            breaks_interval: null,
+            break_length: null
+        },
+        errors: []
     }
 
     getResponseFromDB = () => {
@@ -21,7 +24,7 @@ class Questionnaire extends Component {
             }
         })
         .then(resp => resp.json())
-        .then((data) => this.setState(data))
+        .then((data) => this.setState({ questionnaire: data }))
     }
 
     componentDidMount() {
@@ -31,19 +34,28 @@ class Questionnaire extends Component {
 
     handleTextChange = event => {
         this.setState({
-           [event.target.name]: event.target.value
+            questionnaire: {
+                ...this.state.questionnaire,
+                [event.target.name]: event.target.value
+            }
         })
     }
 
     handleChangeForNumbers = event => {
         this.setState({
-            [event.target.name]: parseInt(event.target.value)
+            questionnaire: {
+                ...this.state.questionnaire,
+                [event.target.name]: parseInt(event.target.value)
+            }
         })
     }
 
     handleBreaksCheckboxChange = () => {
         this.setState({
-            take_breaks: !this.state.take_breaks
+            questionnaire: {
+                ...this.state.questionnaire, 
+                take_breaks: !this.state.questionnaire.take_breaks
+            }
         })
     }
 
@@ -51,7 +63,10 @@ class Questionnaire extends Component {
     handleBreaksInterval = event => {
         const breaksIntervalInMinutes = parseInt(event.target.value)
         this.setState({
-            breaks_interval: breaksIntervalInMinutes
+            questionnaire: {
+                ...this.state.questionnaire, 
+                breaks_interval: breaksIntervalInMinutes
+            }
         })
     }
 
@@ -67,18 +82,35 @@ class Questionnaire extends Component {
                 'Content-Type': 'application/json',
                 'Authorization': this.props.token
             },
-            body: JSON.stringify({...this.state})
+            body: JSON.stringify({...this.state.questionnaire})
         })
         .then(resp => resp.json())
-        .then(() => this.props.history.push('/feedback'))
+        .then(data => {
+            if (data.errors) {
+                this.setState({ errors: data.errors })
+            } else {
+                this.props.history.push('/feedback')
+            }
+        })
     }
 
 
     render() {
-        const { take_breaks, job_title, working_hours_from, working_hours_to, breaks_interval, break_length} = this.state
+        const { take_breaks, job_title, working_hours_from, working_hours_to, breaks_interval, break_length} = this.state.questionnaire
         return (
             <div className='questionnaire_form'>
                 <h3>Please answer those questions:</h3>
+                {
+                    this.state.errors.length > 0 && (
+                        <div className="questionnaire-errors">
+                            <ul>
+                        {
+                            this.state.errors.map(e => <li key={e}>{e}</li>)
+                        }
+                        </ul>
+                    </div>
+                    )
+                }
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor='job_title'>
                         What is your job title?
@@ -87,6 +119,7 @@ class Questionnaire extends Component {
                             name='job_title' 
                             value={job_title}
                             onChange={this.handleTextChange}
+                            required
                         />
                     </label>
                     <label>
@@ -95,17 +128,23 @@ class Questionnaire extends Component {
                         <label htmlFor='working_hours_from' className='inline_label'>
                             from <input 
                                 type='time' 
+                                min="00:00" 
+                                max="24:00"
                                 name='working_hours_from' 
                                 value={working_hours_from}
                                 onChange={this.handleTextChange}
+                                required
                             /> 
                         </label>
                         <label htmlFor='working_hours_to' className='inline_label'> 
                         &nbsp;to <input 
                                 type='time' 
+                                min="00:00" 
+                                max="24:00"
                                 name='working_hours_to' 
                                 value={working_hours_to}
                                 onChange={this.handleTextChange}
+                                required
                             />
                         </label>
                     </label>
@@ -125,7 +164,7 @@ class Questionnaire extends Component {
                     && <div>
                         <label htmlFor='breaks_interval'>
                             How often do you want to take breaks?
-                            <select name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval}>
+                            <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval}>
                                 <option value='60'>1 hour</option>
                                 <option value='120'>2 hours</option>
                                 <option value='180'>3 hours</option>
@@ -141,6 +180,7 @@ class Questionnaire extends Component {
                                 name='break_length' 
                                 value={break_length}
                                 onChange={this.handleChangeForNumbers}
+                                required
                             /> minutes
                         </label>
                     </div>}
