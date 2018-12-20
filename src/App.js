@@ -52,7 +52,9 @@ class App extends Component {
             localStorage.setItem('activeUser', JSON.stringify(data.user))
             localStorage.setItem('token', data.token)
           
-            this.props.history.push('/dashboard')
+            this.state.activeUser.questionnaire.job_title.length > 0 
+            ? this.props.history.push('/dashboard')
+            : this.props.history.push('/questionnaire')
           }
       })
   }
