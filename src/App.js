@@ -76,19 +76,18 @@ class App extends Component {
   }
 
   handleSignUpResponse = res => {
-    // if(res.error) {
-    //   const error_msg = res.error
-    //   return error_msg
-    // } else {
-      console.log(res)
+    if(res.error) {
+      const error_msg = res.error
+      return error_msg
+    } else {
       this.setUser(res.user)
       this.setState({
         token: res.token
       })
       localStorage.setItem('token', res.token)
       this.props.history.push('/about')
-    //   return null
-    // }
+      return null
+    }
   }
 
   // postSignupDetails = (user_credentials) => {
