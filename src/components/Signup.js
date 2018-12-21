@@ -4,14 +4,20 @@ import { withRouter } from 'react-router'
 class Signup extends Component {
 
     state = {
-        name: "",
-        username: "",
-        password: "",
+        new_user: {
+            name: '',
+            username: '',
+            password: ''
+        },
         errors: []
     }
 
     handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
+        this.setState({ 
+            new_user: {
+                [event.target.name]: event.target.value 
+            }
+        })
     }
 
     postDefaultQuestionnaire = (user_id) => {
@@ -35,10 +41,11 @@ class Signup extends Component {
 
     submit = (e) => {
         e.preventDefault()
+        const { name, username, password } = this.state.new_user
         const body = {
-            name: this.state.name,
-            username: this.state.username,
-            password: this.state.password
+            name: name,
+            username: username,
+            password: password
         }
 
         this.props.handleSubmit(body)
@@ -80,5 +87,7 @@ class Signup extends Component {
         )
     }
 }
+
+
 
 export default withRouter(Signup);

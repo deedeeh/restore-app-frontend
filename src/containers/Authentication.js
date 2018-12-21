@@ -48,7 +48,9 @@ class Authentication extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body)
-        }).then(resp => resp.json()) 
+        })
+        .then(resp => resp.json()) 
+        .then(data => console.log(data))
     }
 
     render() {
