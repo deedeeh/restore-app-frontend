@@ -10,9 +10,16 @@ class Chart extends Component {
     }
 
     render() {
-        const { percentage } = this.props;
+        const { percentage, minutesToNextBreak, minutesRemainingInBreak } = this.props;
         return (
             <div>
+                <div>
+                    {
+                        minutesToNextBreak <= 0 ? 
+                        `Take a break! ${minutesRemainingInBreak} minutes remaining` :
+                        `${minutesToNextBreak} minutes until your next break`
+                    }
+                </div>
                 <CircularProgressbar
                     initialAnimation={true}
                     counterClockwise={false}

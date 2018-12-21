@@ -10,28 +10,30 @@ const timeStringToObject = (timeString) => {
     }
   }
   
-  const startEndToMinutes = (start, end) => {
-    const startObj = timeStringToObject(start);
-    const endObj = timeStringToObject(end);
-    const hours = endObj.hours - startObj.hours;
-    const minutes = endObj.minutes - startObj.minutes;
-    return (hours * 60) + minutes;
-  }
-  
   const minutesSince = (from) => {
     const fromObj = timeStringToObject(from)
     const now = new Date(Date.now())
     const nowString = `${now.getHours()}:${now.getMinutes()}`
     const nowObj = timeStringToObject(nowString)
     const hours = nowObj.hours - fromObj.hours;
-    const minutes = nowObj.minutes - fromObj.minutes;
+    const minutes = nowObj.minutes - fromObj.minutes + (now.getSeconds() / 60);
     return (hours * 60) + minutes;
   }
+
+  const minTommss = (minutes) => {
+    const sign = minutes < 0 ? "-" : "";
+    const min = Math.floor(Math.abs(minutes));
+    const sec = Math.floor((Math.abs(minutes) * 60) % 60);
+    return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+   }
 
 class Dashboard extends Component {
     state = {
         timestamp: '',
         working_hours_in_minutes: null,
+        minutesRemainingInBreak: undefined,
+        minutesToNextBreak: undefined,
+        percentage: undefined
     }
     
     // getQuestionnaireInfo = () => {
@@ -81,6 +83,21 @@ class Dashboard extends Component {
     componentDidMount() {
         this.getDate();
         this.getResponseFromDB();
+        const { user } = this.props
+
+        this.setState({
+            minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
+            minutesToNextBreak: this.getMinutesToNextBreak(user.questionnaire),
+            percentage: this.getPercentageToNextBreak(user.questionnaire)
+        })
+
+        setInterval(() => {
+            this.setState({
+                minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
+                minutesToNextBreak: this.getMinutesToNextBreak(user.questionnaire),
+                percentage: this.getPercentageToNextBreak(user.questionnaire)
+            })
+        }, 100)
     }
 
     getDate = () => {
@@ -93,11 +110,38 @@ class Dashboard extends Component {
     }
 
     getPercentageToNextBreak = (data) => {
-        const totalMinutesInDay = startEndToMinutes(data.working_hours_from, data.working_hours_to)
-        const currentMinuteFromStart = minutesSince(data.working_hours_from)
-        const breakTotal = data.breaks_interval + data.break_length
-        return 100 - ((currentMinuteFromStart / breakTotal - Math.floor(currentMinuteFromStart / breakTotal)) * 100)
+        const minutesToNextBreak = this.getMinutesToNextBreak(data)
+        return (minutesToNextBreak / data.breaks_interval) * 100
       }
+
+    getMinutesToNextBreak = data => {
+        const currentMinuteFromStart = minutesSince(data.working_hours_from)
+        let i = 0;
+        const breakTotal = data.breaks_interval + data.break_length
+        while(currentMinuteFromStart > i * breakTotal) {
+            i++;
+        }
+        const prevBreakEndMinute = (i - 1) * breakTotal;
+        
+        return data.breaks_interval - (currentMinuteFromStart - prevBreakEndMinute);
+    }
+
+    getMinutesRemainingInBreak = data => {
+        return this.getMinutesToNextBreak(data) + data.break_length
+    }
+
+    getPercentage(data) {
+        const { user } = this.props
+        const breakTotal = data.breaks_interval + data.break_length
+        return this.state.minutesToNextBreak <= 0 ? 
+        100 * (this.state.minutesRemainingInBreak / user.questionnaire.break_length) : 
+        this.state.percentage
+    }
+
+    decimalsToSeconds = minutes => {
+        // 10.5
+        // return '10:30'
+    }
 
     render() {
         const { user } = this.props
@@ -109,7 +153,7 @@ class Dashboard extends Component {
                     <iframe src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=en&size=small&timezone=Europe%2FLondon" width="100%" height="90" frameborder="0" seamless>
                     </iframe> 
                 </div>
-                <Chart percentage={this.getPercentageToNextBreak(user.questionnaire)} />
+                <Chart minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} percentage={this.getPercentage(user.questionnaire)} />
             </div>
         )
     }

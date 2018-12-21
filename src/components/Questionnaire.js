@@ -165,6 +165,7 @@ class Questionnaire extends Component {
                         <label htmlFor='breaks_interval'>
                             How often do you want to take breaks?
                             <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval}>
+                                <option value='6'>0.1 hour</option>
                                 <option value='60'>1 hour</option>
                                 <option value='120'>2 hours</option>
                                 <option value='180'>3 hours</option>
