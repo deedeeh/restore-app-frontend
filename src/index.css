@@ -17,3 +17,8 @@ code {
   text-align: left;
 }
 
+.notification {
+  width: 500px;
+  background: indianred;
+}
+

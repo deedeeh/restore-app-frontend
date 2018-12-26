@@ -1,10 +1,16 @@
 import React from 'react'
+import '../index.css'
 
-const Notification = () => {
+const Notification = (props) => {
+
+    const handleOkBtn = () => {
+        props.minutesRemainingInBreak()
+    }
+
     return (
-        <div>
+        <div className='notification'>
             <p>It is time for your - 1st - break</p>
-            <button>OK</button>
+            <button onClick={handleOkBtn}>OK</button>
             <button>Snooze</button>
         </div>
     )

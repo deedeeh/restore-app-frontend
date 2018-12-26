@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import Chart from '../components/Chart'
+import Notification from '../components/Notification'
 
 const timeStringToObject = (timeString) => {
     const times = timeString.split(':')
@@ -103,6 +104,7 @@ class Dashboard extends Component {
     getDate = () => {
         const timestamp = new Date().toLocaleString();
         this.setState({ timestamp });
+        return timestamp
     }
 
     capitalize = (word) => {
@@ -138,22 +140,15 @@ class Dashboard extends Component {
         this.state.percentage
     }
 
-    decimalsToSeconds = minutes => {
-        // 10.5
-        // return '10:30'
-    }
-
     render() {
         const { user } = this.props
         return (
             <div>
                 <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
-                <div className='dateTime_container'> 
-                    <iframe src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=en&size=small&timezone=Europe%2FLondon" width="100%" height="90" frameborder="0" seamless>
-                    </iframe> 
-                </div>
-                <Chart minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} percentage={this.getPercentage(user.questionnaire)} />
+                <p>{new Date().toLocaleDateString()}</p>
+                <Chart minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} percentage={this.getPercentage(user.questionnaire)} />
+                { this.state.minutesToNextBreak === 0 && <Notification minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} />}
             </div>
         )
     }
