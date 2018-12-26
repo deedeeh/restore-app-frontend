@@ -3,7 +3,7 @@ import { Button } from 'semantic-ui-react'
 
 import Login from '../components/Login'
 import Signup from '../components/Signup'
-import '../css/Authentication.css'
+import '../css/authentication.css'
 
 class Authentication extends Component {
     state = {

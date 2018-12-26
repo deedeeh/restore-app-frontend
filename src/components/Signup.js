@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Button, Form } from 'semantic-ui-react'
 
-import '../css/Authentication.css'
+import '../css/authentication.css'
 
 class Signup extends Component {
 
