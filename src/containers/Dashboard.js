@@ -34,7 +34,8 @@ class Dashboard extends Component {
         working_hours_in_minutes: null,
         minutesRemainingInBreak: undefined,
         minutesToNextBreak: undefined,
-        percentage: undefined
+        percentage: undefined,
+        showNotification: false
     }
     
     // getQuestionnaireInfo = () => {
@@ -147,8 +148,7 @@ class Dashboard extends Component {
                 <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
                 <p>{new Date().toLocaleDateString()}</p>
-                <Chart minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} percentage={this.getPercentage(user.questionnaire)} />
-                { this.state.minutesToNextBreak === 0 && <Notification minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} />}
+                <Chart minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} percentage={this.getPercentage(user.questionnaire)} />
             </div>
         )
     }

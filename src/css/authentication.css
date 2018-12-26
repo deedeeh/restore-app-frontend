@@ -1,9 +1,24 @@
-body {
+.auth_container {
+    text-align: left;
+}
+
+.buttons_container {
+    margin: 2em 0;
     text-align: center;
 }
 
-.login_link, .signup_link {
-    /* border: none; */
+.ui.form.login_form, .ui.form.signup_form {
+    max-width: 400px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+h5 {
+    text-align: center;
+}
+
+
+/* .login_link, .signup_link {
     color: inherit;
     padding: 1em;
     margin-bottom: 1em;
@@ -12,9 +27,9 @@ body {
     outline: inherit;
     font-size: 1em;
     color: white;
-}
+} */
 
-.signup_link {
+/* .signup_link {
     background: #43A047;
 }
 
@@ -25,4 +40,4 @@ body {
 .login_form input, .signup_form input {
     border: 1px solid #D0D0D0;
     margin-left: 10px;
-}
+} */ 

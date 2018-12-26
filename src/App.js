@@ -11,8 +11,9 @@ import Evaluation from './components/Evaluation';
 import Navigation from './components/Navigation';
 import Notification from './components/Notification';
 
-import './css/App.css'
 import './css/Navigation.css'
+import './css/App.css'
+
 
 
 class App extends Component {

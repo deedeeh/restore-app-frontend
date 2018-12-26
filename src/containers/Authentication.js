@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from 'semantic-ui-react'
 
 import Login from '../components/Login'
 import Signup from '../components/Signup'
@@ -6,18 +7,22 @@ import '../css/Authentication.css'
 
 class Authentication extends Component {
     state = {
-        show_signup: false
+        show_signup: false,
+        isActive: false
     }
+
 
     handleClickForSignup = () => {
         this.setState({
-            show_signup: true
+            show_signup: true,
+            isActive: true
         })
     }
 
     handleClickForLogin = () => {
         this.setState({
-            show_signup: false
+            show_signup: false,
+            isActive: true
         })
     }
 
@@ -52,12 +57,14 @@ class Authentication extends Component {
     }
 
     render() {
-        const { show_signup } = this.state
+        const { show_signup, isActive } = this.state
         return (
-            <div>
+            <div className='auth_container'>
                 <h5>An app where you always rely on to remind you of tasks during your work.</h5>
-                <button onClick={this.handleClickForLogin} className='login_link'>Log in</button>
-                <button onClick={this.handleClickForSignup} className='signup_link'>Sign up</button>
+                <div className='buttons_container'>
+                    <Button color='linkedin' onClick={this.handleClickForLogin} className='login_link'>Log in</Button>
+                    <Button inverted color='red' onClick={this.handleClickForSignup} className='signup_link'>Sign up</Button>
+                </div>
                 {show_signup ? 
                     <Signup handleResponse={this.props.handleSignUpResponse} handleSubmit={this.signup}/> : 
                     <Login postLoginDetails = {this.props.postLoginDetails}/>

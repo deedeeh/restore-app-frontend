@@ -34,9 +34,9 @@
   .bm-burger-button {
     position: fixed;
     width: 36px;
-    height: 30px;
+    height: 28px;
     left: 36px;
-    top: 36px;
+    top: 30px;
     cursor: pointer;
   }
   

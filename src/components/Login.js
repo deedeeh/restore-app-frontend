@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button, Form } from 'semantic-ui-react'
 
 class Login extends Component {
     state = {
@@ -11,8 +12,6 @@ class Login extends Component {
         this.props.postLoginDetails(this.state)
     }
 
-    
-
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
@@ -21,27 +20,29 @@ class Login extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit} className='login_form'>
-                <label htmlFor='username'>Username:
-                    <input 
+            <Form onSubmit={this.handleSubmit} className='login_form'>
+                <Form.Field>
+                <label htmlFor='username'>Username</label>
+                    <Form.Input 
                         type='text' 
                         name='username' 
                         value={this.state.username}
                         onChange={this.handleChange}
+                        placeholder='Username'
                     />
-                </label>
-                <br />
-                <label htmlFor='password'>Password:
-                    <input 
+                </Form.Field>
+                <Form.Field>
+                <label htmlFor='password'>Password</label>
+                    <Form.Input 
                         type='password' 
                         name='password'    
                         value={this.state.password}
                         onChange={this.handleChange}
+                        placeholder='Password'
                     />
-                </label>
-                <br />
-                <input type='submit' value='Log in'/>
-            </form>
+                </Form.Field>
+                <Button fluid type='submit' color='linkedin'>Log in</Button>
+            </Form>
         )
     }
 }

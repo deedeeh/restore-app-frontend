@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import { Button, Form } from 'semantic-ui-react'
+
+import '../css/Authentication.css'
 
 class Signup extends Component {
 
@@ -51,19 +54,37 @@ class Signup extends Component {
     render () {
         // console.log('this.props', this.props)
         return (
-            <form className='signup_form' onSubmit={this.submit}>
-                <label htmlFor='name'>Name:
-                    <input type='text' name='name' value={this.state.name} onChange={this.handleChange} />
-                </label>
-                <br />
-                <label htmlFor='username'>Username:
-                    <input type='text' name='username' value={this.state.username} onChange={this.handleChange} />
-                </label>
-                <br />
-                <label htmlFor='password'>Password:
-                    <input type='password' name='password' value={this.state.password} onChange={this.handleChange} />
-                </label>
-                <br />
+            <Form className='signup_form' onSubmit={this.submit}>
+                <Form.Field>
+                    <label htmlFor='name'>Name</label>
+                    <Form.Input 
+                        type='text' 
+                        name='name' 
+                        value={this.state.name} 
+                        onChange={this.handleChange} 
+                        placeholder='Name'
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <label htmlFor='username'>Username</label>
+                    <Form.Input 
+                        type='text' 
+                        name='username' 
+                        value={this.state.username} 
+                        onChange={this.handleChange} 
+                        placeholder='Username'
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <label htmlFor='password'>Password</label>
+                    <Form.Input 
+                        type='password' 
+                        name='password' 
+                        value={this.state.password} 
+                        onChange={this.handleChange} 
+                        placeholder='Password'
+                    />
+                </Form.Field>
                 {
                     this.state.errors.length > 0 && (
                         <div className="sign-up-errors">
@@ -75,8 +96,8 @@ class Signup extends Component {
                     </div>
                     )
                 }
-                <button>Submit</button>
-            </form>
+                <Button fluid type='submit' color='red'>Sign up</Button>
+            </Form>
         )
     }
 }

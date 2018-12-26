@@ -4,18 +4,9 @@
 
 .App-header {
     text-align: center;
+    margin-bottom: 3em;
 }
-/* 
-<Authentication />
-         <hr />
-          <About />
-          <hr />
-          <Questionnaire />
-          <hr />
-          <QuestionnaireFeedback />
-          <hr />
-          <Dashboard />
-          <hr />
-          <Evaluation />
-          <hr />
-          <Notification />   */
+
+.App-header h1 {
+    font-size: 3em;
+}
