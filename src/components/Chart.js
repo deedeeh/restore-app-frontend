@@ -20,13 +20,16 @@ class Chart extends Component {
                         `${minutesToNextBreak} minutes until your next break`
                     }
                 </div>
-                <CircularProgressbar
-                    initialAnimation={true}
-                    counterClockwise={false}
-                    percentage={percentage}
-                    text={`${Math.floor(percentage)}%`}
-                />
-                <p className='total_breaks'>{}/{totalBreaksInDay} breaks</p>
+                <div className='chart_breaks'>
+                    <CircularProgressbar
+                        className='chart'
+                        initialAnimation={true}
+                        counterClockwise={false}
+                        percentage={percentage}
+                        text={`${Math.floor(percentage)}%`}
+                    />
+                    <p className='total_breaks'>{}/{totalBreaksInDay} breaks</p>
+                </div>
             </div>
         )
     }

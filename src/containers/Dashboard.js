@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import Chart from '../components/Chart'
 import Notification from '../components/Notification'
 
+import '../css/Dashboard.css'
+
 const timeStringToObject = (timeString) => {
     const times = timeString.split(':')
     return {
@@ -141,7 +143,7 @@ class Dashboard extends Component {
         this.state.percentage
     }
 
-    getHowManyBreaksInADay = (data) => {
+    getHowManyBreaksInDay = (data) => {
         const totalBreaks = Math.round((this.state.working_hours_in_minutes - 60) / (data.breaks_interval + data.break_length))
         return totalBreaks
     } 
@@ -153,13 +155,16 @@ class Dashboard extends Component {
                 <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
                 <p>{new Date().toLocaleDateString()}</p>
-                <Chart 
-                    minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} 
-                    minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} 
-                    percentage={this.getPercentage(user.questionnaire)} 
-                    totalBreaksInDay={this.getHowManyBreaksInADay(user.questionnaire)}
-                />
+                <div>
+                    <Chart 
+                        minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} 
+                        minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} 
+                        percentage={this.getPercentage(user.questionnaire)} 
+                        totalBreaksInDay={this.getHowManyBreaksInDay(user.questionnaire)}
+                    />
+                </div>
                 <Notification />
+                
             </div>
         )
     }

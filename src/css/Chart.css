@@ -44,3 +44,18 @@
   .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
     stroke: transparent;
   }
+
+  .chart {
+    margin: 1em 1.5em;
+  }
+
+  .total_breaks {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+  }
+
+  .chart_breaks {
+      display: flex;
+      justify-content: center;
+  }

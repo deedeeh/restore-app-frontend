@@ -1,8 +1,9 @@
-.dateTime_container {
-    text-align: center;
-    padding: 1em 0;
+.total_breaks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.dateTime_link, .dateTime_span {
-    text-decoration: none;
+.chart_breaks {
+    display: flex;
 }
