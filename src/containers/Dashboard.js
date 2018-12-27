@@ -34,11 +34,12 @@ const timeStringToObject = (timeString) => {
 class Dashboard extends Component {
     state = {
         timestamp: '',
-        working_hours_in_minutes: null,
+        // working_hours_in_minutes: null,
         minutesRemainingInBreak: undefined,
         minutesToNextBreak: undefined,
         percentage: undefined,
-        showNotification: false
+        showNotification: false,
+        interval: undefined
     }
     
     // getQuestionnaireInfo = () => {
@@ -67,27 +68,32 @@ class Dashboard extends Component {
         
         const dayDuration = (endHourInMinutes - startHourInMinutes);
 
-        this.setState({
-            working_hours_in_minutes: dayDuration 
-        })
+        return dayDuration
+        // this.setState({
+        //     working_hours_in_minutes: dayDuration 
+        // })
     }
 
-    getResponseFromDB = () => {
-        return fetch('http://localhost:3000/api/v1/questionnaire', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': this.props.token
-            }
-        })
-        .then(resp => resp.json())
-        .then((data) => 
-            this.calculateHours(data.working_hours_from, data.working_hours_to)
-        )
+    // getResponseFromDB = () => {
+    //     return fetch('http://localhost:3000/api/v1/questionnaire', {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': this.props.token
+    //         }
+    //     })
+    //     .then(resp => resp.json())
+    //     .then((data) => 
+    //         this.calculateHours(data.working_hours_from, data.working_hours_to)
+    //     )
+    // }
+
+    componentWillUnmount() {
+        clearInterval(this.state.interval)
     }
 
     componentDidMount() {
         this.getDate();
-        this.getResponseFromDB();
+        // this.getResponseFromDB();
         const { user } = this.props
 
         this.setState({
@@ -96,14 +102,17 @@ class Dashboard extends Component {
             percentage: this.getPercentageToNextBreak(user.questionnaire)
         })
 
-        setInterval(() => {
+        clearInterval(this.state.interval)
+        const interval = setInterval(() => {
             this.setState({
                 minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
                 minutesToNextBreak: this.getMinutesToNextBreak(user.questionnaire),
                 percentage: this.getPercentageToNextBreak(user.questionnaire)
             })
         }, 100)
+        this.setState({ interval })
     }
+
 
     getDate = () => {
         const timestamp = new Date().toLocaleString();
@@ -144,7 +153,7 @@ class Dashboard extends Component {
     }
 
     getHowManyBreaksInDay = (data) => {
-        const totalBreaks = Math.round((this.state.working_hours_in_minutes - 60) / (data.breaks_interval + data.break_length))
+        const totalBreaks = Math.round((this.calculateHours(data.working_hours_from, data.working_hours_to) - 60) / (data.breaks_interval + data.break_length))
         return totalBreaks
     } 
 
@@ -157,10 +166,11 @@ class Dashboard extends Component {
                 <p>{new Date().toLocaleDateString()}</p>
                 <div>
                     <Chart 
-                        minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} 
-                        minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} 
+                        minutesRemainingInBreak={this.state.minutesRemainingInBreak} 
+                        minutesToNextBreak={this.state.minutesToNextBreak} 
                         percentage={this.getPercentage(user.questionnaire)} 
                         totalBreaksInDay={this.getHowManyBreaksInDay(user.questionnaire)}
+                        minTommss={minTommss}
                     />
                 </div>
                 <Notification />

@@ -10,14 +10,14 @@ class Chart extends Component {
     }
 
     render() {
-        const { percentage, minutesToNextBreak, minutesRemainingInBreak, totalBreaksInDay } = this.props;
+        const { percentage, minutesToNextBreak, minutesRemainingInBreak, totalBreaksInDay, minTommss } = this.props;
         return (
             <div>
                 <div>
                     {
                         minutesToNextBreak <= 0 ? 
-                        `Take a break! ${minutesRemainingInBreak} minutes remaining` :
-                        `${minutesToNextBreak} minutes until your next break`
+                        `Take a break! ${minTommss(minutesRemainingInBreak)} minutes remaining` :
+                        `${minTommss(minutesToNextBreak)} minutes until your next break`
                     }
                 </div>
                 <div className='chart_breaks'>

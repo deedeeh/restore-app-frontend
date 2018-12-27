@@ -89,6 +89,7 @@ class Questionnaire extends Component {
             if (data.errors) {
                 this.setState({ errors: data.errors })
             } else {
+                this.props.updateQuestionnaire(data)
                 this.props.history.push('/feedback')
             }
         })

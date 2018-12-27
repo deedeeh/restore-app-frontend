@@ -109,6 +109,15 @@ class App extends Component {
   //     })
   // }
 
+  updateQuestionnaire = (questionnaire) => {
+    this.setState({
+      activeUser: {
+        ...this.state.activeUser,
+        questionnaire: questionnaire
+      }
+    })
+  }
+
   render() {
     // console.log('token', this.state.token)
     // console.log('activeUser', this.state.activeUser)
@@ -122,7 +131,7 @@ class App extends Component {
           {(this.state.token && this.state.activeUser) ?
           <Switch>
             <Route exact path='/about' component={About} />
-            <Route exact path='/questionnaire' component={(props) => <Questionnaire token={this.state.token} user={this.state.activeUser} {...props} />} />
+            <Route exact path='/questionnaire' component={(props) => <Questionnaire updateQuestionnaire={this.updateQuestionnaire} token={this.state.token} user={this.state.activeUser} {...props} />} />
             <Route exact path='/dashboard' component={(props) => <Dashboard {...props} token={this.state.token} user={this.state.activeUser} />} />
             <Route exact path='/feedback' component={QuestionnaireFeedback} />
             <Route exact path='/history' component={() => <h2>Coming Soon...</h2>} />
