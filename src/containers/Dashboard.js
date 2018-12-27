@@ -34,7 +34,6 @@ const timeStringToObject = (timeString) => {
 class Dashboard extends Component {
     state = {
         timestamp: '',
-        // working_hours_in_minutes: null,
         minutesRemainingInBreak: undefined,
         minutesToNextBreak: undefined,
         percentage: undefined,
@@ -69,23 +68,7 @@ class Dashboard extends Component {
         const dayDuration = (endHourInMinutes - startHourInMinutes);
 
         return dayDuration
-        // this.setState({
-        //     working_hours_in_minutes: dayDuration 
-        // })
     }
-
-    // getResponseFromDB = () => {
-    //     return fetch('http://localhost:3000/api/v1/questionnaire', {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': this.props.token
-    //         }
-    //     })
-    //     .then(resp => resp.json())
-    //     .then((data) => 
-    //         this.calculateHours(data.working_hours_from, data.working_hours_to)
-    //     )
-    // }
 
     componentWillUnmount() {
         clearInterval(this.state.interval)
@@ -93,7 +76,6 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.getDate();
-        // this.getResponseFromDB();
         const { user } = this.props
 
         this.setState({
@@ -144,9 +126,8 @@ class Dashboard extends Component {
         return this.getMinutesToNextBreak(data) + data.break_length
     }
 
-    getPercentage(data) {
+    getPercentage = (data) => {
         const { user } = this.props
-        // const breakTotal = data.breaks_interval + data.break_length
         return this.state.minutesToNextBreak <= 0 ? 
         100 * (this.state.minutesRemainingInBreak / user.questionnaire.break_length) : 
         this.state.percentage
