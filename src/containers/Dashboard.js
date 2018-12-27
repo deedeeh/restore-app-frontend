@@ -26,6 +26,7 @@ const timeStringToObject = (timeString) => {
     const min = Math.floor(Math.abs(minutes));
     const sec = Math.floor((Math.abs(minutes) * 60) % 60);
     return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+    
    }
 
 class Dashboard extends Component {
@@ -105,7 +106,6 @@ class Dashboard extends Component {
     getDate = () => {
         const timestamp = new Date().toLocaleString();
         this.setState({ timestamp });
-        return timestamp
     }
 
     capitalize = (word) => {
@@ -135,11 +135,16 @@ class Dashboard extends Component {
 
     getPercentage(data) {
         const { user } = this.props
-        const breakTotal = data.breaks_interval + data.break_length
+        // const breakTotal = data.breaks_interval + data.break_length
         return this.state.minutesToNextBreak <= 0 ? 
         100 * (this.state.minutesRemainingInBreak / user.questionnaire.break_length) : 
         this.state.percentage
     }
+
+    getHowManyBreaksInADay = (data) => {
+        const totalBreaks = Math.round((this.state.working_hours_in_minutes - 60) / (data.breaks_interval + data.break_length))
+        return totalBreaks
+    } 
 
     render() {
         const { user } = this.props
@@ -148,7 +153,13 @@ class Dashboard extends Component {
                 <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
                 <p>{new Date().toLocaleDateString()}</p>
-                <Chart minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} percentage={this.getPercentage(user.questionnaire)} />
+                <Chart 
+                    minutesRemainingInBreak={minTommss(this.state.minutesRemainingInBreak)} 
+                    minutesToNextBreak={minTommss(this.state.minutesToNextBreak)} 
+                    percentage={this.getPercentage(user.questionnaire)} 
+                    totalBreaksInDay={this.getHowManyBreaksInADay(user.questionnaire)}
+                />
+                <Notification />
             </div>
         )
     }

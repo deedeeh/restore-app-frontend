@@ -10,7 +10,7 @@ class Chart extends Component {
     }
 
     render() {
-        const { percentage, minutesToNextBreak, minutesRemainingInBreak } = this.props;
+        const { percentage, minutesToNextBreak, minutesRemainingInBreak, totalBreaksInDay } = this.props;
         return (
             <div>
                 <div>
@@ -26,6 +26,7 @@ class Chart extends Component {
                     percentage={percentage}
                     text={`${Math.floor(percentage)}%`}
                 />
+                <p className='total_breaks'>{}/{totalBreaksInDay} breaks</p>
             </div>
         )
     }
