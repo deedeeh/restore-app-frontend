@@ -61,11 +61,12 @@ class Questionnaire extends Component {
 
     //converts the hh:mm to minutes and it will be called before saving the state to the db
     handleBreaksInterval = event => {
+        
         const breaksIntervalInMinutes = parseInt(event.target.value)
         this.setState({
             questionnaire: {
                 ...this.state.questionnaire, 
-                breaks_interval: breaksIntervalInMinutes
+                breaks_interval: breaksIntervalInMinutes * 60
             }
         })
     }
@@ -165,7 +166,7 @@ class Questionnaire extends Component {
                     && <div>
                         <label htmlFor='breaks_interval'>
                             How often do you want to take breaks?
-                            <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval}>
+                            <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval / 60}>
                                 <option value='6'>0.1 hour</option>
                                 <option value='15'>0.25 hour</option>
                                 <option value='60'>1 hour</option>

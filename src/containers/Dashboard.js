@@ -13,6 +13,7 @@ const timeStringToObject = (timeString) => {
     }
   }
   
+  // TODO: Rename to secondsSince
   const minutesSince = (from) => {
     const fromObj = timeStringToObject(from)
     const now = new Date(Date.now())
@@ -20,7 +21,7 @@ const timeStringToObject = (timeString) => {
     const nowObj = timeStringToObject(nowString)
     const hours = nowObj.hours - fromObj.hours;
     const minutes = nowObj.minutes - fromObj.minutes + (now.getSeconds() / 60);
-    return (hours * 60) + minutes;
+    return (hours * 360) + minutes * 60;
   }
 
   const minTommss = (minutes) => {
@@ -28,8 +29,15 @@ const timeStringToObject = (timeString) => {
     const min = Math.floor(Math.abs(minutes));
     const sec = Math.floor((Math.abs(minutes) * 60) % 60);
     return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
-    
    }
+
+const ssTommss = (seconds) => {
+    const sign = seconds < 0 ? "-" : "";
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+
+    return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+}
 
 class Dashboard extends Component {
     state = {
@@ -91,7 +99,7 @@ class Dashboard extends Component {
                 minutesToNextBreak: this.getMinutesToNextBreak(user.questionnaire),
                 percentage: this.getPercentageToNextBreak(user.questionnaire)
             })
-        }, 100)
+        }, 1000)
         this.setState({ interval })
     }
 
@@ -110,10 +118,12 @@ class Dashboard extends Component {
         return (minutesToNextBreak / data.breaks_interval) * 100
       }
 
+    //   TODO: rename to getSecondsToNextBreak
     getMinutesToNextBreak = data => {
         const currentMinuteFromStart = minutesSince(data.working_hours_from)
         let i = 0;
-        const breakTotal = data.breaks_interval + data.break_length
+        
+        const breakTotal = data.breaks_interval + data.break_length * 60
         while(currentMinuteFromStart > i * breakTotal) {
             i++;
         }
@@ -123,28 +133,30 @@ class Dashboard extends Component {
     }
 
     getMinutesRemainingInBreak = data => {
-        return this.getMinutesToNextBreak(data) + data.break_length
+        return this.getMinutesToNextBreak(data) + data.break_length * 60
     }
 
     getPercentage = (data) => {
         const { user } = this.props
+        
         return this.state.minutesToNextBreak <= 0 ? 
-        100 * (this.state.minutesRemainingInBreak / user.questionnaire.break_length) : 
+        100 * (this.state.minutesRemainingInBreak / (user.questionnaire.break_length * 60)) : 
         this.state.percentage
     }
 
     getHowManyBreaksInDay = (data) => {
-        const totalBreaks = Math.round((this.calculateHours(data.working_hours_from, data.working_hours_to) - 60) / (data.breaks_interval + data.break_length))
+        const totalBreaks = Math.round((this.calculateHours(data.working_hours_from, data.working_hours_to) - 60) / (data.breaks_interval / 60 + data.break_length))
         return totalBreaks
     } 
 
     render() {
+        console.log(this.state.minutesToNextBreak);
         const { user } = this.props
         return (
             <div>
                 <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
-                <p>{new Date().toLocaleDateString()}</p>
+                <p>{new Date().toDateString()}</p>
                 <div>
                     <Chart 
                         minutesRemainingInBreak={this.state.minutesRemainingInBreak} 
@@ -152,6 +164,7 @@ class Dashboard extends Component {
                         percentage={this.getPercentage(user.questionnaire)} 
                         totalBreaksInDay={this.getHowManyBreaksInDay(user.questionnaire)}
                         minTommss={minTommss}
+                        ssTommss={ssTommss}
                     />
                 </div>
                 <Notification />
