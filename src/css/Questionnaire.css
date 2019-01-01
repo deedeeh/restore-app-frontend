@@ -47,8 +47,12 @@
   width: 50%;
 }
 
-.ui.form .inline.field>:last-child {
-  width: 27%;
-  margin-right: 0;
+.ui.fluid.button {
+  margin-top: 1.7em;
+}
 
+.ui.form .inline.field .inline_text, 
+.ui.form .inline.field [name='breaks_interval'] {
+  width: 27%;
+  margin: 0;
 }

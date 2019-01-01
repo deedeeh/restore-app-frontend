@@ -165,14 +165,17 @@ class Questionnaire extends Component {
                     && <div>
                         <Form.Field>
                         <label htmlFor='breaks_interval'>How often do you want to take breaks?</label>
-                            <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval / 60}>
-                                <option value='6'>0.1 hour</option>
-                                <option value='15'>0.25 hour</option>
-                                <option value='60'>1 hour</option>
-                                <option value='120'>2 hours</option>
-                                <option value='180'>3 hours</option>
-                                <option value='240'>4 hours</option>
-                            </select>
+                            <Form.Field inline>
+                                <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval / 60}>
+                                    <option value='6'>0.1</option>
+                                    <option value='15'>0.25</option>
+                                    <option value='60'>1</option>
+                                    <option value='120'>2</option>
+                                    <option value='180'>3</option>
+                                    <option value='240'>4</option>
+                                </select>
+                                <label>hour(s)</label>
+                            </Form.Field>
                         </Form.Field>
                         <Form.Field>
                         <label htmlFor='break_length'>How long roughly is each break?</label>
@@ -189,7 +192,7 @@ class Questionnaire extends Component {
                                 </Form.Field>
                         </Form.Field>
                     </div>}
-                    <input type='submit' value='Submit'/>
+                    <Button type='submit' fluid color='black' size='large'>Submit</Button>
                 </Form>
             </div>
         )
