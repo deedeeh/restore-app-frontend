@@ -1,5 +1,6 @@
 .questionnaire_form {
     text-align: left;
+    margin-left: 1em; 
   }
   
   .questionnaire_form input {
@@ -32,3 +33,22 @@
     margin-top: 1em;
     background: lightblue;
   }
+
+  .ui.form .inline.field>label {
+    margin: 0 .75714286em;
+  }
+
+  .ui.large.form {
+    max-width: 400px;
+    width: 350px;
+}
+
+.ui.form select {
+  width: 50%;
+}
+
+.ui.form .inline.field>:last-child {
+  width: 27%;
+  margin-right: 0;
+
+}

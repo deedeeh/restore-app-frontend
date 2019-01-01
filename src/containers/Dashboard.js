@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from 'semantic-ui-react'
 
 import Chart from '../components/Chart'
 import Notification from '../components/Notification'
@@ -45,8 +46,8 @@ class Dashboard extends Component {
         minutesRemainingInBreak: undefined,
         minutesToNextBreak: undefined,
         percentage: undefined,
-        showNotification: false,
-        interval: undefined
+        interval: undefined,
+        flag: false
     }
     
     // getQuestionnaireInfo = () => {
@@ -65,6 +66,20 @@ class Dashboard extends Component {
     //         }
     //     })
     // }
+
+    handleFlagButtonClick = () => {
+        const { user } = this.props
+        this.setState({
+            flag: !this.state.flag
+        })
+        clearInterval(this.state.percentage)
+        clearInterval(this.state.interval)
+        // setInterval(() => 
+        //     this.setState({
+        //         minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire)
+        //     })
+        // )
+    }
 
     calculateHours = (start, end) => {
         const startHour = start.split(':');
@@ -88,7 +103,7 @@ class Dashboard extends Component {
 
         this.setState({
             minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
-            minutesToNextBreak: this.getMinutesToNextBreak(user.questionnaire),
+            minutesToNextBreak: this.getSecondsToNextBreak(user.questionnaire),
             percentage: this.getPercentageToNextBreak(user.questionnaire)
         })
 
@@ -96,7 +111,7 @@ class Dashboard extends Component {
         const interval = setInterval(() => {
             this.setState({
                 minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
-                minutesToNextBreak: this.getMinutesToNextBreak(user.questionnaire),
+                minutesToNextBreak: this.getSecondsToNextBreak(user.questionnaire),
                 percentage: this.getPercentageToNextBreak(user.questionnaire)
             })
         }, 1000)
@@ -114,12 +129,13 @@ class Dashboard extends Component {
     }
 
     getPercentageToNextBreak = (data) => {
-        const minutesToNextBreak = this.getMinutesToNextBreak(data)
-        return (minutesToNextBreak / data.breaks_interval) * 100
+        const minutesToNextBreak = this.getSecondsToNextBreak(data)
+        return Math.ceil((minutesToNextBreak / data.breaks_interval) * 100)
       }
 
     //   TODO: rename to getSecondsToNextBreak
-    getMinutesToNextBreak = data => {
+
+    getSecondsToNextBreak = data => {
         const currentMinuteFromStart = minutesSince(data.working_hours_from)
         let i = 0;
         
@@ -133,7 +149,7 @@ class Dashboard extends Component {
     }
 
     getMinutesRemainingInBreak = data => {
-        return this.getMinutesToNextBreak(data) + data.break_length * 60
+        return this.getSecondsToNextBreak(data) + data.break_length * 60
     }
 
     getPercentage = (data) => {
@@ -165,9 +181,10 @@ class Dashboard extends Component {
                         totalBreaksInDay={this.getHowManyBreaksInDay(user.questionnaire)}
                         minTommss={minTommss}
                         ssTommss={ssTommss}
+                        flag={this.state.flag}
                     />
                 </div>
-                <Notification />
+                <Button onClick={this.handleFlagButtonClick} type='submit'>Take Break</Button>
                 
             </div>
         )
@@ -175,3 +192,19 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
+
+// 1. when mounting app set timers for work and break to 1h and 15mins (from props)
+// 2. check if break or work time ? work - set timer for work running, leave break timer off.
+//     break - set timer for break running, leave timer for work alone.
+// 3. reaches 0? stop ticking. don't go into negative numbers. ALso, notify the user. Time to rest. mofo.
+// 4. if clicked button - do 3 things:
+//  4.1 change status of flag from work to rest / rest to work.
+//  4.2 reset both timers to their initial values.
+//  4.3 start other timer running.
+// 
+// 
+// 
+// 
+// 
+// 
+// 

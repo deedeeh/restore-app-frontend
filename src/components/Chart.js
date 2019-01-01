@@ -10,19 +10,19 @@ class Chart extends Component {
     }
 
     render() {
-        const { percentage, minutesToNextBreak, minutesRemainingInBreak, totalBreaksInDay, minTommss, ssTommss } = this.props;
+        const { percentage, minutesToNextBreak, minutesRemainingInBreak, totalBreaksInDay, minTommss, ssTommss, flag } = this.props;
         return (
             <div>
                 <div>
                     {
-                        minutesToNextBreak <= 0 ? 
+                        (minutesToNextBreak <= 0 && flag) ? 
                         `Take a break! ${ssTommss(minutesRemainingInBreak)} minutes remaining` :
                         `${ssTommss(minutesToNextBreak)} minutes until your next break`
                     }
                 </div>
                 <div className='chart_breaks'>
                     <CircularProgressbar
-                        className='chart'
+                        className={flag ? (minutesRemainingInBreak > 0 ? 'chart-break' : 'chart-red') : (minutesToNextBreak <= 0 ? 'chart-red' : 'chart')}
                         initialAnimation={true}
                         counterClockwise={false}
                         percentage={percentage}
