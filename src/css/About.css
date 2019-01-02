@@ -1,5 +1,18 @@
 .app_intro {
-    /* margin: 0 1em; */
     text-align : left;
-    line-height: 1.2em;
+    line-height: 1.3em;
+    font-size: 1.2em;
+}
+
+.ui.container {
+    margin-bottom: 1.5em;
+}
+
+.ui.button.about_button {
+    font-size: 1.2em;
+    background: #8E5468;
+}
+
+.ui.button > a {
+    color: white;
 }
