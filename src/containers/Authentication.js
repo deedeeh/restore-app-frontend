@@ -60,14 +60,14 @@ class Authentication extends Component {
         const { show_signup, isActive } = this.state
         return (
             <div className='auth_container'>
-                <h5>An app where you always rely on to remind you of tasks during your work.</h5>
+                <h3>Restore assists you while you work.</h3>
                 <div className='buttons_container'>
                     <Button color='linkedin' onClick={this.handleClickForLogin} className='login_link'>Log in</Button>
                     <Button inverted color='red' onClick={this.handleClickForSignup} className='signup_link'>Sign up</Button>
                 </div>
                 {show_signup ? 
-                    <Signup handleResponse={this.props.handleSignUpResponse} handleSubmit={this.signup}/> : 
-                    <Login postLoginDetails = {this.props.postLoginDetails}/>
+                    <Signup className='signup_link' handleResponse={this.props.handleSignUpResponse} handleSubmit={this.signup}/> : 
+                    <Login className='login_link' postLoginDetails = {this.props.postLoginDetails}/>
                 }
             </div>
         )

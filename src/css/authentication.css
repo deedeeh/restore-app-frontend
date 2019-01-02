@@ -13,31 +13,50 @@
     margin: 0 auto;
 }
 
-h5 {
+h3 {
     text-align: center;
+    font-size: 1.4em;
+}
+
+.ui.button.login_link, .ui.button.signup_link {
+    font-size: 1.1em;
+}
+
+.ui.fluid.button.signup_link {
+    font-size: 1.2em;
+}
+
+.ui.inverted.red.button:hover, .ui.inverted.red.buttons .button:hover {
+    background: #8E5468;
+}
+
+.ui.red.button, .ui.red.buttons .button {
+    background: #8E5468;
+    font-size: 1.1em;
+}
+
+.ui.inverted.red.button {
+    color: #8E5468;
+    box-shadow: 0 0 0 2px #8E5468 insert!important;
+}
+
+.ui.inverted.red.button, .ui.inverted.red.buttons .button {
+    box-shadow: 0 0 0 2px #8E5468 inset!important;
+}
+
+.ui.inverted.linkedin.button:hover, .ui.inverted.linkedin.buttons .button:hover {
+    background: #3A5D62;
+}
+
+.ui.linkedin.button:hover {
+    background: #3A5D62;
+}
+
+.ui.linkedin.button {
+    background: #3A5D62;
+    font-size: 1.1em;
 }
 
 
-/* .login_link, .signup_link {
-    color: inherit;
-    padding: 1em;
-    margin-bottom: 1em;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: inherit;
-    font-size: 1em;
-    color: white;
-} */
 
-/* .signup_link {
-    background: #43A047;
-}
 
-.login_link {
-    background: #03A9F4;
-}
-
-.login_form input, .signup_form input {
-    border: 1px solid #D0D0D0;
-    margin-left: 10px;
-} */ 

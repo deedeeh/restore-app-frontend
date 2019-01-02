@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Button } from 'semantic-ui-react';
 
 import Chart from '../components/Chart'
 import Notification from '../components/Notification'
@@ -169,10 +169,10 @@ class Dashboard extends Component {
         console.log(this.state.minutesToNextBreak);
         const { user } = this.props
         return (
-            <div>
-                <h3>Welcome {this.capitalize(user.name)} to your dashboard</h3>
+            <div className='dashboard'>
+                <h2 className='hello_user'>Hello {this.capitalize(user.name)}</h2>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
-                <p>{new Date().toDateString()}</p>
+                <p className='date'>{new Date().toDateString()}</p>
                 <div>
                     <Chart 
                         minutesRemainingInBreak={this.state.minutesRemainingInBreak} 
@@ -184,8 +184,7 @@ class Dashboard extends Component {
                         flag={this.state.flag}
                     />
                 </div>
-                <Button onClick={this.handleFlagButtonClick} type='submit'>Take Break</Button>
-                
+                <Button fluid className='dashboard_button' onClick={this.handleFlagButtonClick} type='submit'>Take Break</Button>
             </div>
         )
     }

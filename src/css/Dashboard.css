@@ -1,0 +1,21 @@
+.dashboard {
+    width: 350px;
+    margin: 0 auto;
+}
+
+.date {
+    text-align: center;
+}
+
+.ui.button.dashboard_button {
+    background: #2E394F;
+    color: #FAF6F6;
+    font-size: 1.1em
+}
+
+.hello_user {
+    font-size: 2em;
+    color: #2E394F;
+}
+
+    
