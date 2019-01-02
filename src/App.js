@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import { Header, Icon } from 'semantic-ui-react'
 
 import Authentication from './containers/Authentication';
 import About from './components/About'
 import Questionnaire from './components/Questionnaire'
 import QuestionnaireFeedback from './components/QuestionnaireFeedback';
 import Dashboard from './containers/Dashboard';
-import Evaluation from './components/Evaluation';
 import Navigation from './components/Navigation';
-import Notification from './components/Notification';
 
 import './css/Navigation.css'
 import './css/App.css'
+
 
 
 
@@ -123,10 +123,13 @@ class App extends Component {
     // console.log('activeUser', this.state.activeUser)
     return (
       <div className="App">
-        <header className="App-header">
+        <Header className="App-header">
           <Navigation clickLink={() => this.setState({menuIsOpen: false})} onStateChange={(state) => this.setState({menuIsOpen: state.isOpen}) } isOpen={this.state.menuIsOpen} pageWrapId={"page-wrap"} outerContainerId={"Nav-app"} />
-          <h1>RESTore</h1>
-        </header>
+            <div className='title'>
+              <Icon name='redo' size='big'/>
+              <Header.Content>RESTore</Header.Content>
+            </div>
+        </Header>
         <div className='styling_sections' id="page-wrap">
           {(this.state.token && this.state.activeUser) ?
           <Switch>

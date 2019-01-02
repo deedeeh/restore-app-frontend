@@ -10,3 +10,12 @@
 .App-header h1 {
     font-size: 3em;
 }
+
+.title {
+    padding-top: 2em;
+}
+
+.ui.header .content {
+    font-size: 2em;
+    line-height: 1em;
+}
