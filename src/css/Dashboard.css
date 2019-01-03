@@ -5,6 +5,13 @@
 
 .date {
     text-align: center;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.user_job {
+    margin: 0 0 1em;;
+    font-size: 1.2em;
 }
 
 .ui.button.dashboard_button {
@@ -16,6 +23,13 @@
 .hello_user {
     font-size: 2em;
     color: #2E394F;
+}
+
+.breaks_messages {
+    height: 420px;
+    width: 90%;
+    overflow: scroll;
+    margin: 0 auto;
 }
 
     

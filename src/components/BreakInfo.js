@@ -8,10 +8,13 @@ const BreakInfo = ({ start, end, completed, completeBreak, incompleteBreak }) =>
 
     return (
         <Message negative={completed === false} positive={completed === true}>
-        <Message.Header>{completed === undefined ? 'Did you take this break?' : (completed === true ? 'Break taken!' : 'Not taken')}</Message.Header>
-        {
-            `From ${start} to ${end}`
-        }
+            <Message.Header>{completed === undefined ? 'Did you take this break?' : (completed === true ? 'Break taken!' : 'Not taken')}</Message.Header>
+            <div className='timer'>
+                {
+                    `From ${start} to ${end}`
+                }
+            </div>
+            <br />
         {
             completed === undefined && 
             <>

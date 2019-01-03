@@ -13,7 +13,7 @@ class Chart extends Component {
         const { percentage, secondsToNextBreak, secondsRemainingInBreak, totalBreaksInDay, minTommss, ssTommss, flag, nextBreak } = this.props;
         return (
             <div>
-                <div>
+                <div className='countdown'>
                     {
                         secondsToNextBreak <= 0  ? 
                         `Take a break! ${ssTommss(secondsRemainingInBreak)} minutes remaining` :

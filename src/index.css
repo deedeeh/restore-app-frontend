@@ -23,3 +23,8 @@ code {
   background: thistle;
 }
 
+.timer {
+  font-size: 1.2em;
+  padding-top: 1em;
+}
+

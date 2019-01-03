@@ -59,3 +59,12 @@
       display: flex;
       justify-content: center;
   }
+
+  .countdown {
+    font-size: 1.2em;
+  }
+
+  /* want to add this as a span for just the countdown */
+  .countdown_num {
+    font-size: 2em;
+  }

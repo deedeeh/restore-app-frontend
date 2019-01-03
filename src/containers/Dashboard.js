@@ -283,7 +283,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <h2 className='hello_user'>Hello {this.capitalize(user.name)}</h2>
-                <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
+                <h4 className='user_job'>{this.capitalize(user.questionnaire.job_title)}</h4>
                 <p className='date'>{new Date().toDateString()}</p>
                 <div>
                     <Chart 
@@ -297,8 +297,7 @@ class Dashboard extends Component {
                         flag={this.state.flag}
                     />
                 </div>
-                {/* <Button onClick={() => this.completeBreak(this.state.nextBreak)} type='submit'>Take Break</Button> */}
-                <div>
+                <div className='breaks_messages'>
                     {
                         this.getPastBreaks().length > 0 &&
                         this.getPastBreaks()
