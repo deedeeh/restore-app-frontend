@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Button } from 'semantic-ui-react'
 
 import Chart from '../components/Chart'
 import Notification from '../components/Notification'
 
 import '../css/Dashboard.css'
+import BreakInfo from '../components/BreakInfo';
 
 const timeStringToObject = (timeString) => {
     const times = timeString.split(':')
@@ -15,14 +16,14 @@ const timeStringToObject = (timeString) => {
   }
   
   // TODO: Rename to secondsSince
-  const minutesSince = (from) => {
+  const secondsSince = (from) => {
     const fromObj = timeStringToObject(from)
     const now = new Date(Date.now())
     const nowString = `${now.getHours()}:${now.getMinutes()}`
     const nowObj = timeStringToObject(nowString)
     const hours = nowObj.hours - fromObj.hours;
     const minutes = nowObj.minutes - fromObj.minutes + (now.getSeconds() / 60);
-    return (hours * 360) + minutes * 60;
+    return (((hours * 60) + minutes) * 60);
   }
 
   const minTommss = (minutes) => {
@@ -34,8 +35,8 @@ const timeStringToObject = (timeString) => {
 
 const ssTommss = (seconds) => {
     const sign = seconds < 0 ? "-" : "";
-    const min = Math.floor(seconds / 60);
-    const sec = seconds % 60;
+    const min = Math.abs(Math.floor(seconds / 60));
+    const sec = Math.abs(seconds % 60);
 
     return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
 }
@@ -43,11 +44,13 @@ const ssTommss = (seconds) => {
 class Dashboard extends Component {
     state = {
         timestamp: '',
-        minutesRemainingInBreak: undefined,
-        minutesToNextBreak: undefined,
+        secondsRemainingInBreak: undefined,
+        secondsToNextBreak: undefined,
         percentage: undefined,
         interval: undefined,
-        flag: false
+        flag: false,
+        nextBreak: undefined,
+        breaks: []
     }
     
     // getQuestionnaireInfo = () => {
@@ -76,7 +79,7 @@ class Dashboard extends Component {
         clearInterval(this.state.interval)
         // setInterval(() => 
         //     this.setState({
-        //         minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire)
+        //         secondsRemainingInBreak: this.getsecondsRemainingInBreak(user.questionnaire)
         //     })
         // )
     }
@@ -97,24 +100,53 @@ class Dashboard extends Component {
         clearInterval(this.state.interval)
     }
 
+    updateBreaks = (data, cb) => {
+        let min = (data.breaks_interval / 60)
+        let totalMins = 24 * 60
+        const breaks = []
+        while (min < totalMins) {
+            breaks.push(
+                {
+                    start: min * 60,
+                    end: (min + data.break_length) * 60
+                }
+            )
+            min += (data.breaks_interval / 60) + data.break_length
+        }
+        this.setState({
+            breaks
+        }, cb)
+    }
+
     componentDidMount() {
         this.getDate();
         const { user } = this.props
 
-        this.setState({
-            minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
-            minutesToNextBreak: this.getSecondsToNextBreak(user.questionnaire),
-            percentage: this.getPercentageToNextBreak(user.questionnaire)
-        })
+        this.updateBreaks(
+            user.questionnaire,
+            () => this.setState({
+                nextBreak: this.getNextBreak(user.questionnaire)
+            },
+                () => this.setState({
+                    secondsRemainingInBreak: this.getsecondsRemainingInBreak(user.questionnaire),
+                    secondsToNextBreak: this.getSecondsToNextBreak(user.questionnaire),
+                    percentage: this.getPercentageToNextBreak(user.questionnaire)
+                })
+            )
+        )
 
         clearInterval(this.state.interval)
+
         const interval = setInterval(() => {
             this.setState({
-                minutesRemainingInBreak: this.getMinutesRemainingInBreak(user.questionnaire),
-                minutesToNextBreak: this.getSecondsToNextBreak(user.questionnaire),
+                nextBreak: this.getNextBreak(user.questionnaire)
+            }, () => this.setState({
+                secondsRemainingInBreak: this.getsecondsRemainingInBreak(user.questionnaire),
+                secondsToNextBreak: this.getSecondsToNextBreak(user.questionnaire),
                 percentage: this.getPercentageToNextBreak(user.questionnaire)
-            })
+            }))
         }, 1000)
+
         this.setState({ interval })
     }
 
@@ -129,54 +161,91 @@ class Dashboard extends Component {
     }
 
     getPercentageToNextBreak = (data) => {
-        const minutesToNextBreak = this.getSecondsToNextBreak(data)
-        return Math.ceil((minutesToNextBreak / data.breaks_interval) * 100)
+        const seconds = this.getSecondsToNextBreak(data)
+        return Math.ceil((seconds / (data.breaks_interval * 60 )) * 100)
       }
+
+    getNextBreak = (data) => this.state.breaks.find(b => !b.completed && b.start > secondsSince(data.working_hours_from))
+
+    incompleteBreak = breakToComplete => {
+        this.setState({
+            breaks: this.state.breaks.map(b => {
+                if (b.start !== breakToComplete.start) return b;
+                b.completed = false;
+                return b;
+            })
+        }, () => this.setState({ nextBreak: this.getNextBreak(this.props.user.questionnaire)}))
+    }
+
+    completeBreak = breakToComplete => {
+        this.setState({
+            breaks: this.state.breaks.map(b => {
+                if (b.start !== breakToComplete.start) return b;
+                b.completed = true;
+                return b;
+            })
+        }, () => this.setState({ nextBreak: this.getNextBreak(this.props.user.questionnaire)}))
+    }
 
     //   TODO: rename to getSecondsToNextBreak
 
-    getSecondsToNextBreak = data => {
-        const currentMinuteFromStart = minutesSince(data.working_hours_from)
-        let i = 0;
-        
-        const breakTotal = data.breaks_interval + data.break_length * 60
-        while(currentMinuteFromStart > i * breakTotal) {
-            i++;
-        }
-        const prevBreakEndMinute = (i - 1) * breakTotal;
-        
-        return data.breaks_interval - (currentMinuteFromStart - prevBreakEndMinute);
+    currentlyInBreak = data => {
+        const currentSecond = secondsSince(data.working_hours_from)
+        return this.state.breaks.filter(b => currentSecond > b.start && currentSecond < b.end).length > 0
     }
 
-    getMinutesRemainingInBreak = data => {
-        return this.getSecondsToNextBreak(data) + data.break_length * 60
+    getSecondsToNextBreak = data => {
+        const currentSecondFromStart = secondsSince(data.working_hours_from)
+        if (this.currentlyInBreak(data)) {
+            return this.state.nextBreak.start - currentSecondFromStart - (data.break_length * 60)
+        } else {
+            return this.state.nextBreak.start - currentSecondFromStart
+        }
+    }
+
+    getsecondsRemainingInBreak = data => {
+        const currentSecondFromStart = secondsSince(data.working_hours_from)
+        return Math.abs((data.break_length * 60) - (this.state.nextBreak.end - currentSecondFromStart))
     }
 
     getPercentage = (data) => {
         const { user } = this.props
         
-        return this.state.minutesToNextBreak <= 0 ? 
-        100 * (this.state.minutesRemainingInBreak / (user.questionnaire.break_length * 60)) : 
+        return this.state.secondsToNextBreak <= 0 ? 
+        100 * (this.state.secondsRemainingInBreak / (user.questionnaire.break_length * 60)) : 
         this.state.percentage
     }
 
     getHowManyBreaksInDay = (data) => {
         const totalBreaks = Math.round((this.calculateHours(data.working_hours_from, data.working_hours_to) - 60) / (data.breaks_interval / 60 + data.break_length))
         return totalBreaks
-    } 
+    }
+    
+    getPastBreaks = () => this.state.breaks.filter(b => b.start < secondsSince(this.props.user.questionnaire.working_hours_from))
+
+    secondsThroughDayToTime = seconds => {
+        const d = new Date()
+        const startTime = this.props.user.questionnaire.working_hours_from
+        const timeObj = timeStringToObject(startTime)
+        d.setHours(timeObj.hours)
+        d.setMinutes(timeObj.minutes)
+        d.setSeconds(seconds)
+        return d.toTimeString().substring(0, 5)
+    }
 
     render() {
-        console.log(this.state.minutesToNextBreak);
+        console.log(this.state.secondsToNextBreak);
         const { user } = this.props
         return (
-            <div className='dashboard'>
+            <div>
                 <h2 className='hello_user'>Hello {this.capitalize(user.name)}</h2>
                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
                 <p className='date'>{new Date().toDateString()}</p>
                 <div>
                     <Chart 
-                        minutesRemainingInBreak={this.state.minutesRemainingInBreak} 
-                        minutesToNextBreak={this.state.minutesToNextBreak} 
+                        nextBreak={this.state.nextBreak}
+                        secondsRemainingInBreak={this.state.secondsRemainingInBreak} 
+                        secondsToNextBreak={this.state.secondsToNextBreak} 
                         percentage={this.getPercentage(user.questionnaire)} 
                         totalBreaksInDay={this.getHowManyBreaksInDay(user.questionnaire)}
                         minTommss={minTommss}
@@ -184,13 +253,57 @@ class Dashboard extends Component {
                         flag={this.state.flag}
                     />
                 </div>
-                <Button fluid className='dashboard_button' onClick={this.handleFlagButtonClick} type='submit'>Take Break</Button>
+                {/* <Button onClick={() => this.completeBreak(this.state.nextBreak)} type='submit'>Take Break</Button> */}
+                <div>
+                    {
+                        this.getPastBreaks().length > 0 &&
+                        this.getPastBreaks()
+                        .sort((a, b) => b.start - a.start)
+                        .map(b => {
+                            return <BreakInfo 
+                                {...b}
+                                start={this.secondsThroughDayToTime(b.start)}
+                                end={this.secondsThroughDayToTime(b.end)}
+                                completeBreak={() => this.completeBreak(b)}
+                                incompleteBreak={() => this.incompleteBreak(b)}
+                            />
+                        })
+                    }
+                </div>
             </div>
         )
     }
 }
 
 export default Dashboard;
+
+
+//     render() {
+//         console.log(this.state.minutesToNextBreak);
+//         const { user } = this.props
+//         return (
+//             <div className='dashboard'>
+//                 <h2 className='hello_user'>Hello {this.capitalize(user.name)}</h2>
+//                 <h4>{this.capitalize(user.questionnaire.job_title)}</h4>
+//                 <p className='date'>{new Date().toDateString()}</p>
+//                 <div>
+//                     <Chart 
+//                         minutesRemainingInBreak={this.state.minutesRemainingInBreak} 
+//                         minutesToNextBreak={this.state.minutesToNextBreak} 
+//                         percentage={this.getPercentage(user.questionnaire)} 
+//                         totalBreaksInDay={this.getHowManyBreaksInDay(user.questionnaire)}
+//                         minTommss={minTommss}
+//                         ssTommss={ssTommss}
+//                         flag={this.state.flag}
+//                     />
+//                 </div>
+//                 <Button fluid className='dashboard_button' onClick={this.handleFlagButtonClick} type='submit'>Take Break</Button>
+//             </div>
+//         )
+//     }
+// }
+
+// export default Dashboard;
 
 // 1. when mounting app set timers for work and break to 1h and 15mins (from props)
 // 2. check if break or work time ? work - set timer for work running, leave break timer off.
