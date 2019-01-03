@@ -7,6 +7,14 @@ import Notification from '../components/Notification'
 import '../css/Dashboard.css'
 import BreakInfo from '../components/BreakInfo';
 
+const getTodaysDateString = () => {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+}
+
 const timeStringToObject = (timeString) => {
     const times = timeString.split(':')
     return {
@@ -36,7 +44,7 @@ const timeStringToObject = (timeString) => {
 const ssTommss = (seconds) => {
     const sign = seconds < 0 ? "-" : "";
     const min = Math.abs(Math.floor(seconds / 60));
-    const sec = Math.abs(seconds % 60);
+    const sec = Math.abs(Math.floor(seconds % 60));
 
     return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
 }
@@ -101,21 +109,36 @@ class Dashboard extends Component {
     }
 
     updateBreaks = (data, cb) => {
-        let min = (data.breaks_interval / 60)
-        let totalMins = 24 * 60
-        const breaks = []
-        while (min < totalMins) {
-            breaks.push(
-                {
-                    start: min * 60,
-                    end: (min + data.break_length) * 60
+        fetch('http://localhost:3000/api/v1/breaks', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(res => res.json())
+        .then(storedBreaks => {
+
+            let min = (data.breaks_interval / 60)
+            let totalMins = 24 * 60
+            const breaks = []
+            while (min < totalMins) {
+                const storedBreak = storedBreaks.find(b => b.start === min * 60 && b.end === (min + data.break_length) * 60)
+                if (storedBreak) {
+                    breaks.push(storedBreak)
+                } else {
+                    breaks.push(
+                        {
+                            start: min * 60,
+                            end: (min + data.break_length) * 60
+                        }
+                    )
                 }
-            )
-            min += (data.breaks_interval / 60) + data.break_length
-        }
-        this.setState({
-            breaks
-        }, cb)
+                min += (data.breaks_interval / 60) + data.break_length
+            }
+            this.setState({
+                breaks
+            }, cb)
+        })
     }
 
     componentDidMount() {
@@ -149,7 +172,26 @@ class Dashboard extends Component {
 
         this.setState({ interval })
     }
+    
+    postBreak = breakToPost => {
 
+        
+
+        return fetch('http://localhost:3000/api/v1/breaks', {
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: JSON.stringify({ 
+                    break: {
+                        ...breakToPost,
+                        the_date: getTodaysDateString()
+                    }
+                })
+            })
+            .then(resp => resp.json())
+    }
 
     getDate = () => {
         const timestamp = new Date().toLocaleString();
@@ -172,6 +214,7 @@ class Dashboard extends Component {
             breaks: this.state.breaks.map(b => {
                 if (b.start !== breakToComplete.start) return b;
                 b.completed = false;
+                this.postBreak(b);
                 return b;
             })
         }, () => this.setState({ nextBreak: this.getNextBreak(this.props.user.questionnaire)}))
@@ -182,6 +225,7 @@ class Dashboard extends Component {
             breaks: this.state.breaks.map(b => {
                 if (b.start !== breakToComplete.start) return b;
                 b.completed = true;
+                this.postBreak(b);
                 return b;
             })
         }, () => this.setState({ nextBreak: this.getNextBreak(this.props.user.questionnaire)}))
