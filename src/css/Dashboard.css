@@ -25,6 +25,10 @@
     color: #2E394F;
 }
 
+.countdown {
+    margin-bottom: 1em;
+}
+
 .breaks_messages {
     height: 420px;
     width: 90%;

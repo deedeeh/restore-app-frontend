@@ -15,7 +15,7 @@ class Chart extends Component {
             <div>
                 <div className='countdown'>
                     {
-                        secondsToNextBreak <= 0  ? 
+                        secondsRemainingInBreak > 0  ? 
                         `Take a break! ${ssTommss(secondsRemainingInBreak)} minutes remaining` :
                         `${ssTommss(secondsToNextBreak)} minutes until your next break`
                     }

@@ -36,16 +36,6 @@ class Authentication extends Component {
         }).then(resp => resp.json()) 
     }
 
-    // login = (body) => {
-    //     return fetch('http://localhost:3000/api/v1/login', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(body)
-    //     }).then(resp => resp.json()).then(data => console.log(data)) 
-    // }
-
     signup = (body) => {
         return fetch('http://localhost:3000/api/v1/signup', {
             method: 'POST',

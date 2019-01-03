@@ -249,7 +249,9 @@ class Dashboard extends Component {
 
     getsecondsRemainingInBreak = data => {
         const currentSecondFromStart = secondsSince(data.working_hours_from)
-        return Math.abs((data.break_length * 60) - (this.state.nextBreak.end - currentSecondFromStart))
+        const currentBreak = this.state.breaks.find(b => b.start < currentSecondFromStart && b.end > currentSecondFromStart)
+        if (!currentBreak) return 0
+        return currentBreak.end - currentSecondFromStart
     }
 
     getPercentage = (data) => {

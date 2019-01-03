@@ -28,3 +28,12 @@ code {
   padding-top: 1em;
 }
 
+.ui.button.yes_button {
+  background: #3A5D62;
+  color: #FAF6F6;
+}
+
+.ui.button.no_button {
+  background: #8E5468;
+  color: #FAF6F6;
+}

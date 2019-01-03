@@ -92,7 +92,7 @@ class Questionnaire extends Component {
                 this.setState({ errors: data.errors })
             } else {
                 this.props.updateQuestionnaire(data)
-                this.props.history.push('/feedback')
+                this.props.history.push('/dashboard')
             }
         })
     }
