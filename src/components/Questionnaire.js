@@ -10,7 +10,7 @@ class Questionnaire extends Component {
             job_title: '',
             working_hours_from: '',
             working_hours_to: '',
-            take_breaks: false,
+            // take_breaks: false,
             breaks_interval: null,
             break_length: null
         },
@@ -51,14 +51,14 @@ class Questionnaire extends Component {
         })
     }
 
-    handleBreaksCheckboxChange = () => {
-        this.setState({
-            questionnaire: {
-                ...this.state.questionnaire, 
-                take_breaks: !this.state.questionnaire.take_breaks
-            }
-        })
-    }
+    // handleBreaksCheckboxChange = () => {
+    //     this.setState({
+    //         questionnaire: {
+    //             ...this.state.questionnaire, 
+    //             take_breaks: !this.state.questionnaire.take_breaks
+    //         }
+    //     })
+    // }
 
     //converts the hh:mm to minutes and it will be called before saving the state to the db
     handleBreaksInterval = event => {
@@ -99,7 +99,7 @@ class Questionnaire extends Component {
 
 
     render() {
-        const { take_breaks, job_title, working_hours_from, working_hours_to, breaks_interval, break_length} = this.state.questionnaire
+        const { job_title, working_hours_from, working_hours_to, breaks_interval, break_length} = this.state.questionnaire
         return (
             <div className='questionnaire_form'>
                 <h3>Please answer those questions:</h3>
@@ -151,47 +151,33 @@ class Questionnaire extends Component {
                         </Form.Field>
                     </Form.Field>
                     <Form.Field>
-                        <label htmlFor='take_breaks'>Do you take breaks?</label>
-                            <Form.Checkbox
-                                id='take_breaks'
-                                type='checkbox' 
-                                checked={take_breaks}
-                                name='take_breaks' 
-                                value={`${take_breaks}`}
-                                onChange={this.handleBreaksCheckboxChange}
-                            />
+                    <label htmlFor='breaks_interval'>How often do you want to take breaks?</label>
+                        <Form.Field inline>
+                            <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval / 60}>
+                                <option value='6'>0.1</option>
+                                <option value='15'>0.25</option>
+                                <option value='60'>1</option>
+                                <option value='120'>2</option>
+                                <option value='180'>3</option>
+                                <option value='240'>4</option>
+                            </select>
+                            <label>hour(s)</label>
+                        </Form.Field>
                     </Form.Field>
-                    {take_breaks 
-                    && <div>
-                        <Form.Field>
-                        <label htmlFor='breaks_interval'>How often do you want to take breaks?</label>
+                    <Form.Field>
+                    <label htmlFor='break_length'>How long roughly is each break?</label>
                             <Form.Field inline>
-                                <select required name='breaks_interval' onChange={this.handleBreaksInterval} value={breaks_interval / 60}>
-                                    <option value='6'>0.1</option>
-                                    <option value='15'>0.25</option>
-                                    <option value='60'>1</option>
-                                    <option value='120'>2</option>
-                                    <option value='180'>3</option>
-                                    <option value='240'>4</option>
-                                </select>
-                                <label>hour(s)</label>
+                                <input 
+                                    className='inline_text'
+                                    type='number' 
+                                    name='break_length' 
+                                    value={break_length}
+                                    onChange={this.handleChangeForNumbers}
+                                    required
+                                /> 
+                                <label>minutes</label>
                             </Form.Field>
-                        </Form.Field>
-                        <Form.Field>
-                        <label htmlFor='break_length'>How long roughly is each break?</label>
-                                <Form.Field inline>
-                                    <input 
-                                        className='inline_text'
-                                        type='number' 
-                                        name='break_length' 
-                                        value={break_length}
-                                        onChange={this.handleChangeForNumbers}
-                                        required
-                                    /> 
-                                    <label>minutes</label>
-                                </Form.Field>
-                        </Form.Field>
-                    </div>}
+                    </Form.Field>
                     <Button type='submit' fluid color='black' size='large'>Submit</Button>
                 </Form>
             </div>

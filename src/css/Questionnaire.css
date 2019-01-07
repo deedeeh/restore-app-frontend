@@ -64,3 +64,18 @@
 h3 {
   text-align: left;
 }
+
+/* <Form.Field>
+                        <label htmlFor='take_breaks'>Do you take breaks?</label>
+                            <Form.Checkbox
+                                id='take_breaks'
+                                type='checkbox' 
+                                checked={take_breaks}
+                                name='take_breaks' 
+                                value={`${take_breaks}`}
+                                onChange={this.handleBreaksCheckboxChange}
+                            />
+                    </Form.Field> */
+
+                    /* {take_breaks 
+                      && */

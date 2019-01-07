@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
 
 import Chart from '../components/Chart'
-import Notification from '../components/Notification'
 
 import '../css/Dashboard.css'
 import BreakInfo from '../components/BreakInfo';
@@ -174,8 +172,6 @@ class Dashboard extends Component {
     }
     
     postBreak = breakToPost => {
-
-        
 
         return fetch('http://localhost:3000/api/v1/breaks', {
                 method:'POST',
